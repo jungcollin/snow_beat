@@ -45,11 +45,20 @@ let speed = INITIAL_SPEED;
 
 // ==================== 캔버스 리사이즈 ====================
 function resizeCanvas() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    // 모바일에서 실제 뷰포트 크기 사용
+    const vh = window.visualViewport ? window.visualViewport.height : window.innerHeight;
+    const vw = window.visualViewport ? window.visualViewport.width : window.innerWidth;
+    canvas.width = vw;
+    canvas.height = vh;
     initStars();
 }
 window.addEventListener('resize', resizeCanvas);
+window.addEventListener('orientationchange', () => {
+    setTimeout(resizeCanvas, 100);
+});
+if (window.visualViewport) {
+    window.visualViewport.addEventListener('resize', resizeCanvas);
+}
 resizeCanvas();
 
 // ==================== 별 초기화 ====================
@@ -804,7 +813,17 @@ canvas.addEventListener('touchstart', (e) => {
     if (gameRunning) {
         placeSnowball();
     }
-});
+}, { passive: false });
+
+// 더블탭 줌 방지
+let lastTouchEnd = 0;
+document.addEventListener('touchend', (e) => {
+    const now = Date.now();
+    if (now - lastTouchEnd <= 300) {
+        e.preventDefault();
+    }
+    lastTouchEnd = now;
+}, { passive: false });
 
 // ==================== UI 이벤트 ====================
 restartBtn.addEventListener('click', initGame);
@@ -875,5 +894,12 @@ canvas.addEventListener('click', function () {
         initGame();
     }
 });
+
+canvas.addEventListener('touchstart', function (e) {
+    if (!gameRunning) {
+        e.preventDefault();
+        initGame();
+    }
+}, { passive: false });
 
 backgroundLoop();

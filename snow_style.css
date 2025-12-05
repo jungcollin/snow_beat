@@ -2,21 +2,31 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
 }
 
-body {
+html, body {
     overflow: hidden;
     font-family: 'Arial', sans-serif;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    touch-action: manipulation;
 }
 
 .game-container {
     position: relative;
-    width: 100vw;
-    height: 100vh;
+    width: 100%;
+    height: 100%;
+    height: 100dvh; /* Dynamic viewport height for mobile */
 }
 
 canvas {
     display: block;
+    touch-action: none;
 }
 
 .ui-overlay {
@@ -194,4 +204,71 @@ canvas {
 
 #closeLeaderboard:hover {
     background: #ecf0f1;
+}
+
+/* Mobile Responsive */
+@media screen and (max-width: 768px) {
+    .score-board {
+        padding: 15px 20px;
+        font-size: 1.1rem;
+        padding-top: env(safe-area-inset-top, 15px);
+    }
+
+    .controls p {
+        font-size: 0.9rem;
+        padding: 0 10px;
+    }
+
+    .modal-content {
+        padding: 25px 20px;
+        min-width: 280px;
+        max-width: 90vw;
+        margin: 0 10px;
+    }
+
+    .modal-content h2 {
+        font-size: 1.5rem;
+        margin-bottom: 15px;
+    }
+
+    .modal-content p {
+        font-size: 1.2rem;
+        margin-bottom: 15px;
+    }
+
+    .modal-content button {
+        padding: 14px 25px;
+        font-size: 1rem;
+        width: 100%;
+        margin: 5px 0;
+    }
+
+    .score-form input {
+        padding: 14px 20px;
+        font-size: 1rem;
+    }
+
+    .leaderboard {
+        min-width: 280px;
+        max-width: 90vw;
+        padding: 20px;
+    }
+
+    .leaderboard h3 {
+        font-size: 1.3rem;
+    }
+
+    .leaderboard li {
+        padding: 10px 12px;
+        font-size: 0.95rem;
+    }
+}
+
+@media screen and (max-width: 380px) {
+    .score-board {
+        flex-direction: column;
+        align-items: center;
+        gap: 5px;
+        font-size: 1rem;
+    }
 }
