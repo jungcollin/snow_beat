@@ -16,7 +16,7 @@ const closeLeaderboardBtn = document.getElementById('closeLeaderboard');
 // ==================== 게임 상수 ====================
 const SNOWBALL_SIZE = 70; // 더 큰 눈덩이
 const INITIAL_WIDTH = 200; // 넓은 시작 크기
-const INITIAL_SPEED = 1.2; // 매우 느린 시작 속도
+const INITIAL_SPEED = 2.5; // 적당한 시작 속도
 const SPEED_INCREMENT = 0.02; // 아주 작은 속도 증가
 const MAX_SPEED = 4; // 최대 속도 제한
 const GROUND_HEIGHT = 120;
