@@ -31,10 +31,9 @@ const ENDING_SCORE = 500;
 // ==================== 게임 상수 ====================
 const SNOWBALL_SIZE = 70; // 더 큰 눈덩이
 const INITIAL_WIDTH = 200; // 넓은 시작 크기
-const INITIAL_SPEED = 2.5; // 적당한 시작 속도
-const SPEED_INCREMENT = 0.02; // 아주 작은 속도 증가
-const MAX_SPEED = 4; // 최대 속도 제한
 const GROUND_HEIGHT = 120;
+
+// 속도는 점수 구간별로 계산 (getSpeedForScore 함수 사용)
 
 // ==================== 배경 상태 ====================
 let backgroundProgress = 0; // 0 ~ 1 (지상 ~ 우주 끝)
@@ -57,9 +56,21 @@ let highScore = parseInt(localStorage.getItem('snowman_high_score') || '0');
 let gameRunning = false;
 let scrollOffset = 0;
 let targetScrollOffset = 0; // 목표 스크롤 (부드러운 전환용)
-let speed = INITIAL_SPEED;
+let speed = 2.5;
 let prevCanvasWidth = 0;
 let prevCanvasHeight = 0;
+
+// 점수 구간별 속도 계산
+// 0-100: 2.5 → 3.0, 100-300: 3.0 → 3.5, 300-500: 3.5 → 4.0
+function getSpeedForScore(s) {
+    if (s <= 100) {
+        return 2.5 + (s / 100) * 0.5;           // 2.5 → 3.0
+    } else if (s <= 300) {
+        return 3.0 + ((s - 100) / 200) * 0.5;   // 3.0 → 3.5
+    } else {
+        return 3.5 + ((s - 300) / 200) * 0.5;   // 3.5 → 4.0
+    }
+}
 
 // ==================== 스테이지 이름 ====================
 const STAGE_NAMES = [
@@ -1751,9 +1762,9 @@ function drawSideObjects(progress, groundYOffset) {
     const baseY = groundYOffset;
     const p = progress;
 
-    // 1. 겨울 밤 ~ 높은 하늘 (0 ~ 0.05): 나무, 집
-    if (p < 0.08) {
-        const opacity = 1 - smoothStep(0.04, 0.08, p);
+    // 1. 겨울 밤 ~ 높은 하늘 (0 ~ 0.04): 나무, 집
+    if (p < 0.05) {
+        const opacity = 1 - smoothStep(0.03, 0.05, p);
         ctx.globalAlpha = opacity;
         drawTree(-30, canvas.height - 200 + baseY, 1);
         drawTree(40, canvas.height - 180 + baseY, 0.8);
@@ -1761,35 +1772,35 @@ function drawSideObjects(progress, groundYOffset) {
         drawTree(canvas.width - 50, canvas.height - 190 + baseY, 0.9);
     }
 
-    // 2. 성층권 (0.04 ~ 0.12): 구름, 비행기
-    if (p > 0.03 && p < 0.15) {
-        const opacity = smoothStep(0.03, 0.06, p) * (1 - smoothStep(0.10, 0.15, p));
+    // 2. 성층권 (0.04 ~ 0.08): 구름, 비행기
+    if (p > 0.03 && p < 0.09) {
+        const opacity = smoothStep(0.03, 0.04, p) * (1 - smoothStep(0.07, 0.09, p));
         ctx.globalAlpha = opacity;
         drawCloud(50, 100 + baseY, 60);
         drawCloud(canvas.width - 120, 150 + baseY, 50);
         drawAirplane(canvas.width - 150, 180 + baseY);
     }
 
-    // 3. 우주 진입 (0.08 ~ 0.20): 위성, 우주선
-    if (p > 0.06 && p < 0.22) {
-        const opacity = smoothStep(0.06, 0.10, p) * (1 - smoothStep(0.18, 0.22, p));
+    // 3. 우주 진입 (0.08 ~ 0.12): 위성, 우주선
+    if (p > 0.07 && p < 0.13) {
+        const opacity = smoothStep(0.07, 0.08, p) * (1 - smoothStep(0.11, 0.13, p));
         ctx.globalAlpha = opacity;
         drawSatellite(80, 150 + baseY);
         drawSatellite(canvas.width - 100, 300 + baseY);
         drawSpaceStation(canvas.width - 180, 120 + baseY);
     }
 
-    // 4. 은하계 (0.12 ~ 0.28): 행성들
-    if (p > 0.10 && p < 0.30) {
-        const opacity = smoothStep(0.10, 0.14, p) * (1 - smoothStep(0.26, 0.30, p));
+    // 4. 은하계 (0.12 ~ 0.18): 행성들
+    if (p > 0.11 && p < 0.19) {
+        const opacity = smoothStep(0.11, 0.12, p) * (1 - smoothStep(0.17, 0.19, p));
         ctx.globalAlpha = opacity;
         drawPlanet(60, 180 + baseY, 35, '#e74c3c', true);
         drawPlanet(canvas.width - 80, 130 + baseY, 50, '#f39c12', false);
     }
 
-    // 5. 블랙홀/퀘이사 (0.18 ~ 0.35): 소행성, 잔해
-    if (p > 0.16 && p < 0.38) {
-        const opacity = smoothStep(0.16, 0.20, p) * (1 - smoothStep(0.34, 0.38, p));
+    // 5. 블랙홀/퀘이사 (0.18 ~ 0.24): 소행성, 잔해
+    if (p > 0.17 && p < 0.25) {
+        const opacity = smoothStep(0.17, 0.18, p) * (1 - smoothStep(0.23, 0.25, p));
         ctx.globalAlpha = opacity;
         for (let i = 0; i < 5; i++) {
             const x = (i % 2 === 0) ? 20 + i * 20 : canvas.width - 40 - i * 15;
@@ -1797,151 +1808,151 @@ function drawSideObjects(progress, groundYOffset) {
         }
     }
 
-    // 6. 다중우주 (0.28 ~ 0.45): 에너지 파동, 시공간 균열
-    if (p > 0.26 && p < 0.48) {
-        const opacity = smoothStep(0.26, 0.30, p) * (1 - smoothStep(0.44, 0.48, p));
+    // 6. 다중우주 (0.24 ~ 0.30): 에너지 파동, 시공간 균열
+    if (p > 0.23 && p < 0.31) {
+        const opacity = smoothStep(0.23, 0.24, p) * (1 - smoothStep(0.29, 0.31, p));
         ctx.globalAlpha = opacity;
         drawEnergyWave(40, 180 + baseY);
         drawSpacetimeRift(canvas.width - 50, 250 + baseY);
     }
 
-    // 7. 옴니버스/초월 (0.32 ~ 0.55): 빛나는 구체들
-    if (p > 0.30 && p < 0.58) {
-        const opacity = smoothStep(0.30, 0.35, p) * (1 - smoothStep(0.54, 0.58, p));
+    // 7. 옴니버스/초월 (0.30 ~ 0.36): 빛나는 구체들
+    if (p > 0.29 && p < 0.37) {
+        const opacity = smoothStep(0.29, 0.30, p) * (1 - smoothStep(0.35, 0.37, p));
         ctx.globalAlpha = opacity;
         drawGlowingOrb(50, 150 + baseY, 25, '#8B5CF6');
         drawGlowingOrb(canvas.width - 60, 280 + baseY, 30, '#06B6D4');
     }
 
-    // 8. 무한/존재 (0.38 ~ 0.62): 희미한 빛줄기
-    if (p > 0.36 && p < 0.65) {
-        const opacity = smoothStep(0.36, 0.42, p) * (1 - smoothStep(0.60, 0.65, p));
+    // 8. 무한/존재 (0.36 ~ 0.42): 희미한 빛줄기
+    if (p > 0.35 && p < 0.43) {
+        const opacity = smoothStep(0.35, 0.36, p) * (1 - smoothStep(0.41, 0.43, p));
         ctx.globalAlpha = opacity;
         drawLightBeam(30, baseY);
         drawLightBeam(canvas.width - 40, baseY);
     }
 
-    // 9. 창조/의식 (0.48 ~ 0.72): 황금빛 입자
-    if (p > 0.46 && p < 0.75) {
-        const opacity = smoothStep(0.46, 0.52, p) * (1 - smoothStep(0.70, 0.75, p));
+    // 9. 창조/의식 (0.42 ~ 0.48): 황금빛 입자
+    if (p > 0.41 && p < 0.49) {
+        const opacity = smoothStep(0.41, 0.42, p) * (1 - smoothStep(0.47, 0.49, p));
         ctx.globalAlpha = opacity;
         drawGoldenParticles(baseY);
     }
 
-    // 10. 시간/차원 (0.55 ~ 0.78): 모래시계, 균열
-    if (p > 0.53 && p < 0.80) {
-        const opacity = smoothStep(0.53, 0.58, p) * (1 - smoothStep(0.76, 0.80, p));
+    // 10. 시간/차원 (0.48 ~ 0.54): 모래시계, 균열
+    if (p > 0.47 && p < 0.55) {
+        const opacity = smoothStep(0.47, 0.48, p) * (1 - smoothStep(0.53, 0.55, p));
         ctx.globalAlpha = opacity;
         drawFloatingHourglass(60, 200 + baseY);
         drawFloatingHourglass(canvas.width - 80, 350 + baseY);
     }
 
-    // 11. 혼돈/결정 (0.65 ~ 0.85): 기하학적 패턴
-    if (p > 0.63 && p < 0.88) {
-        const opacity = smoothStep(0.63, 0.68, p) * (1 - smoothStep(0.84, 0.88, p));
+    // 11. 혼돈/결정 (0.54 ~ 0.60): 기하학적 패턴
+    if (p > 0.53 && p < 0.61) {
+        const opacity = smoothStep(0.53, 0.54, p) * (1 - smoothStep(0.59, 0.61, p));
         ctx.globalAlpha = opacity;
         drawGeometricPattern(40, 150 + baseY);
         drawGeometricPattern(canvas.width - 60, 300 + baseY);
     }
 
-    // 12. 에테르/항성 (0.72 ~ 0.92): 가스 구름
-    if (p > 0.70 && p < 0.94) {
-        const opacity = smoothStep(0.70, 0.75, p) * (1 - smoothStep(0.90, 0.94, p));
+    // 12. 에테르/항성 (0.60 ~ 0.66): 가스 구름
+    if (p > 0.59 && p < 0.67) {
+        const opacity = smoothStep(0.59, 0.60, p) * (1 - smoothStep(0.65, 0.67, p));
         ctx.globalAlpha = opacity;
         drawGasCloud(50, 180 + baseY, '#FF9500');
         drawGasCloud(canvas.width - 70, 320 + baseY, '#00D4FF');
     }
 
-    // 13. 동결/암흑 (0.82 ~ 0.98): 얼음 결정
-    if (p > 0.80 && p < 1.0) {
-        const opacity = smoothStep(0.80, 0.85, p) * (1 - smoothStep(0.96, 1.0, p));
+    // 13. 동결/암흑 (0.66 ~ 0.72): 얼음 결정
+    if (p > 0.65 && p < 0.73) {
+        const opacity = smoothStep(0.65, 0.66, p) * (1 - smoothStep(0.71, 0.73, p));
         ctx.globalAlpha = opacity;
         drawIceCrystal(45, 200 + baseY);
         drawIceCrystal(canvas.width - 55, 280 + baseY);
     }
 
-    // 14. 스펙트럼 너머 (0.40 ~ 0.44): 양자 입자
-    if (p > 0.40 && p < 0.46) {
-        const opacity = smoothStep(0.40, 0.42, p) * (1 - smoothStep(0.44, 0.46, p));
+    // 14. 양자 입자 (0.72 ~ 0.78)
+    if (p > 0.71 && p < 0.79) {
+        const opacity = smoothStep(0.71, 0.72, p) * (1 - smoothStep(0.77, 0.79, p));
         ctx.globalAlpha = opacity;
         drawQuantumParticles(50, 150 + baseY, 'rgba(150, 100, 255, 0.7)');
         drawQuantumParticles(canvas.width - 50, 300 + baseY, 'rgba(100, 200, 255, 0.7)');
     }
 
-    // 15. 양자 영역 ~ 현실 경계 (0.44 ~ 0.50): 차원 포탈
-    if (p > 0.44 && p < 0.52) {
-        const opacity = smoothStep(0.44, 0.46, p) * (1 - smoothStep(0.50, 0.52, p));
+    // 15. 차원 포탈 (0.78 ~ 0.84)
+    if (p > 0.77 && p < 0.85) {
+        const opacity = smoothStep(0.77, 0.78, p) * (1 - smoothStep(0.83, 0.85, p));
         ctx.globalAlpha = opacity;
         drawDimensionPortal(40, 200 + baseY, 30);
         drawDimensionPortal(canvas.width - 40, 350 + baseY, 25);
     }
 
-    // 16. 가능성의 바다 ~ 영혼의 통로 (0.48 ~ 0.56): 별의 잔해
-    if (p > 0.48 && p < 0.58) {
-        const opacity = smoothStep(0.48, 0.50, p) * (1 - smoothStep(0.56, 0.58, p));
+    // 16. 별의 잔해 (0.84 ~ 0.90)
+    if (p > 0.83 && p < 0.91) {
+        const opacity = smoothStep(0.83, 0.84, p) * (1 - smoothStep(0.89, 0.91, p));
         ctx.globalAlpha = opacity;
         drawStellarDebris(60, 180 + baseY);
         drawStellarDebris(canvas.width - 60, 280 + baseY);
     }
 
-    // 17. 신성의 문 ~ 우주적 각성 (0.54 ~ 0.62): 신성 광선
-    if (p > 0.54 && p < 0.64) {
-        const opacity = smoothStep(0.54, 0.56, p) * (1 - smoothStep(0.62, 0.64, p));
+    // 17. 신성 광선 (0.90 ~ 0.96)
+    if (p > 0.89 && p < 0.97) {
+        const opacity = smoothStep(0.89, 0.90, p) * (1 - smoothStep(0.95, 0.97, p));
         ctx.globalAlpha = opacity;
         drawDivineRay(25, baseY);
         drawDivineRay(canvas.width - 25, baseY);
     }
 
-    // 18. 초월적 인식 ~ 완전한 조화 (0.60 ~ 0.68): 우주 먼지
-    if (p > 0.60 && p < 0.70) {
-        const opacity = smoothStep(0.60, 0.62, p) * (1 - smoothStep(0.68, 0.70, p));
+    // 18. 우주 먼지 (0.96 ~ 1.0)
+    if (p > 0.95 && p <= 1.0) {
+        const opacity = smoothStep(0.95, 0.96, p);
         ctx.globalAlpha = opacity;
         drawCosmicDust(baseY);
     }
 
-    // 19. 무한의 춤 ~ 영원의 불꽃 (0.66 ~ 0.74): 에너지 고리
-    if (p > 0.66 && p < 0.76) {
-        const opacity = smoothStep(0.66, 0.68, p) * (1 - smoothStep(0.74, 0.76, p));
+    // 19. 에너지 고리 (0.66 ~ 0.70)
+    if (p > 0.65 && p < 0.71) {
+        const opacity = smoothStep(0.65, 0.66, p) * (1 - smoothStep(0.69, 0.71, p));
         ctx.globalAlpha = opacity;
         drawEnergyRing(55, 200 + baseY, 'rgba(255, 150, 50, 0.6)');
         drawEnergyRing(canvas.width - 55, 320 + baseY, 'rgba(50, 200, 255, 0.6)');
     }
 
-    // 20. 심연의 노래 ~ 우주의 숨결 (0.72 ~ 0.80): 시공간 왜곡
-    if (p > 0.72 && p < 0.82) {
-        const opacity = smoothStep(0.72, 0.74, p) * (1 - smoothStep(0.80, 0.82, p));
+    // 20. 시공간 왜곡 (0.70 ~ 0.74)
+    if (p > 0.69 && p < 0.75) {
+        const opacity = smoothStep(0.69, 0.70, p) * (1 - smoothStep(0.73, 0.75, p));
         ctx.globalAlpha = opacity;
         drawSpacetimeWarp(45, 180 + baseY);
         drawSpacetimeWarp(canvas.width - 45, 350 + baseY);
     }
 
-    // 21. 빛의 바다 ~ 어둠의 왕좌 (0.78 ~ 0.86): 초월의 눈
-    if (p > 0.78 && p < 0.88) {
-        const opacity = smoothStep(0.78, 0.80, p) * (1 - smoothStep(0.86, 0.88, p));
+    // 21. 초월의 눈 (0.74 ~ 0.78)
+    if (p > 0.73 && p < 0.79) {
+        const opacity = smoothStep(0.73, 0.74, p) * (1 - smoothStep(0.77, 0.79, p));
         ctx.globalAlpha = opacity;
         drawEyeOfTranscendence(50, 220 + baseY);
         drawEyeOfTranscendence(canvas.width - 50, 380 + baseY);
     }
 
-    // 22. 최초의 기억 ~ 마지막 속삭임 (0.84 ~ 0.92): 빛나는 룬
-    if (p > 0.84 && p < 0.94) {
-        const opacity = smoothStep(0.84, 0.86, p) * (1 - smoothStep(0.92, 0.94, p));
+    // 22. 빛나는 룬 (0.78 ~ 0.82)
+    if (p > 0.77 && p < 0.83) {
+        const opacity = smoothStep(0.77, 0.78, p) * (1 - smoothStep(0.81, 0.83, p));
         ctx.globalAlpha = opacity;
         drawGlowingRune(40, 200 + baseY, 'rgba(200, 180, 100, 0.7)');
         drawGlowingRune(canvas.width - 40, 340 + baseY, 'rgba(100, 180, 200, 0.7)');
     }
 
-    // 23. 세계의 심장 ~ 운명의 실 (0.90 ~ 0.96): 원시 불꽃
-    if (p > 0.90 && p < 0.98) {
-        const opacity = smoothStep(0.90, 0.92, p) * (1 - smoothStep(0.96, 0.98, p));
+    // 23. 원시 불꽃 (0.82 ~ 0.86)
+    if (p > 0.81 && p < 0.87) {
+        const opacity = smoothStep(0.81, 0.82, p) * (1 - smoothStep(0.85, 0.87, p));
         ctx.globalAlpha = opacity;
         drawPrimordialFlame(30, canvas.height - 100 + baseY);
         drawPrimordialFlame(canvas.width - 30, canvas.height - 100 + baseY);
     }
 
-    // 24. 절대자의 꿈 ~ 절대자의 왕좌 (0.96 ~ 1.0): 최종 조합
-    if (p > 0.96) {
-        const opacity = smoothStep(0.96, 0.98, p);
+    // 24. 절대자의 왕좌 (0.98 ~ 1.0): 최종 조합
+    if (p > 0.98) {
+        const opacity = smoothStep(0.98, 0.99, p);
         ctx.globalAlpha = opacity * 0.6;
         drawChainsOfEternity(20, baseY);
         drawChainsOfEternity(canvas.width - 20, baseY);
@@ -3163,7 +3174,7 @@ class Snowball {
 function initGame() {
     snowballs = [];
     score = 0;
-    speed = INITIAL_SPEED;
+    speed = getSpeedForScore(0);
     scrollOffset = 0;
     targetScrollOffset = 0;
     backgroundProgress = 0;
@@ -3418,8 +3429,8 @@ function placeSnowball() {
     const stageIndex = Math.min(Math.floor(score / 5), STAGE_NAMES.length - 1);
     gameMessage.textContent = STAGE_NAMES[stageIndex];
 
-    // 속도 증가 (최대 제한)
-    speed = Math.min(speed + SPEED_INCREMENT, MAX_SPEED);
+    // 점수 구간별 속도 적용
+    speed = getSpeedForScore(score);
 
     // 배경 진행도: 500점에서 모든 배경 완료 (101개 스테이지 * 5점)
     targetBackgroundProgress = Math.min(score / 500, 1);
