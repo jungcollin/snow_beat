@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coin Stacking Game</title>
+    <link rel="stylesheet" href="coin_style.css">
+</head>
+
+<body>
+    <div class="game-container">
+        <h1>동전 쌓기</h1>
+        <div class="score-board">
+            <span>Score: <span id="score">0</span></span>
+            <span>High Score: <span id="high-score">0</span></span>
+        </div>
+        <canvas id="gameCanvas"></canvas>
+        <div class="controls">
+            <p>클릭 또는 스페이스바로 동전을 떨어뜨리세요!</p>
+            <button id="restartBtn" style="display: none;">다시 시작</button>
+        </div>
+    </div>
+    <script src="coin_game.js"></script>
+</body>
+
+</html>

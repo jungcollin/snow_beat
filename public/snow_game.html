@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>눈사람 쌓기</title>
+    <link rel="stylesheet" href="snow_style.css">
+</head>
+
+<body>
+    <div class="game-container">
+        <canvas id="gameCanvas"></canvas>
+        <div class="ui-overlay">
+            <div class="score-board">
+                <span>Score: <span id="score">0</span></span>
+                <span>High Score: <span id="high-score">0</span></span>
+            </div>
+            <div class="controls">
+                <p id="game-message">클릭 또는 스페이스바로 눈을 떨어뜨리세요!</p>
+            </div>
+        </div>
+
+        <!-- Game Over Modal -->
+        <div id="gameOverModal" class="modal hidden">
+            <div class="modal-content">
+                <h2>⛄ Game Over ⛄</h2>
+                <p>최종 점수: <span id="final-score">0</span></p>
+                <div class="score-form">
+                    <input type="text" id="username" placeholder="닉네임 입력" maxlength="12">
+                    <button id="save-score-btn">점수 등록</button>
+                </div>
+                <button id="restartBtn">다시 시작</button>
+                <button id="skipBtn">등록 안 함</button>
+            </div>
+        </div>
+
+        <!-- Leaderboard -->
+        <div id="leaderboard" class="leaderboard hidden">
+            <h3>🏆 순위표 🏆</h3>
+            <ul id="leaderboard-list"></ul>
+            <button id="closeLeaderboard">닫기</button>
+        </div>
+    </div>
+    <script src="snow_game.js"></script>
+</body>
+
+</html>
