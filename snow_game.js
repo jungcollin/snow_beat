@@ -668,119 +668,1665 @@ function drawMultiverse(opacity) {
     ctx.restore();
 }
 
+// ==================== 확장 스테이지 배경 효과 (14-41) ====================
+
+// 14. 옴니버스 - 모든 다중우주를 포함하는 거대한 구체들
+function drawOmniverse(opacity) {
+    if (opacity <= 0) return;
+    ctx.save();
+    ctx.globalAlpha = opacity;
+
+    // 거대한 빛나는 구체들
+    const spheres = [
+        { x: 0.2, y: 0.3, r: 120, color: '#8B5CF6' },
+        { x: 0.8, y: 0.5, r: 100, color: '#06B6D4' },
+        { x: 0.5, y: 0.7, r: 80, color: '#F59E0B' }
+    ];
+
+    for (const s of spheres) {
+        const x = canvas.width * s.x;
+        const y = canvas.height * s.y;
+        const gradient = ctx.createRadialGradient(x, y, 0, x, y, s.r);
+        gradient.addColorStop(0, s.color + '60');
+        gradient.addColorStop(0.5, s.color + '30');
+        gradient.addColorStop(1, 'transparent');
+        ctx.beginPath();
+        ctx.arc(x, y, s.r, 0, Math.PI * 2);
+        ctx.fillStyle = gradient;
+        ctx.fill();
+    }
+
+    ctx.restore();
+}
+
+// 15. 초월 공간 - 빛나는 기하학적 패턴
+function drawTranscendence(opacity) {
+    if (opacity <= 0) return;
+    ctx.save();
+    ctx.globalAlpha = opacity * 0.6;
+
+    const time = Date.now() / 3000;
+    ctx.strokeStyle = 'rgba(200, 150, 255, 0.5)';
+    ctx.lineWidth = 1;
+
+    // 회전하는 기하학적 패턴
+    for (let i = 0; i < 6; i++) {
+        const angle = time + (i * Math.PI / 3);
+        const x = canvas.width / 2 + Math.cos(angle) * 100;
+        const y = canvas.height / 2 + Math.sin(angle) * 100;
+
+        ctx.beginPath();
+        ctx.moveTo(canvas.width / 2, canvas.height / 2);
+        ctx.lineTo(x, y);
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.arc(x, y, 20, 0, Math.PI * 2);
+        ctx.stroke();
+    }
+
+    ctx.restore();
+}
+
+// 16. 무한의 끝 - 어둠 속 희미한 빛줄기
+function drawInfinityEdge(opacity) {
+    if (opacity <= 0) return;
+    ctx.save();
+    ctx.globalAlpha = opacity * 0.4;
+
+    // 희미한 빛줄기들
+    for (let i = 0; i < 5; i++) {
+        const x = canvas.width * (0.1 + i * 0.2);
+        const gradient = ctx.createLinearGradient(x, 0, x, canvas.height);
+        gradient.addColorStop(0, 'transparent');
+        gradient.addColorStop(0.5, 'rgba(255, 255, 255, 0.1)');
+        gradient.addColorStop(1, 'transparent');
+
+        ctx.fillStyle = gradient;
+        ctx.fillRect(x - 2, 0, 4, canvas.height);
+    }
+
+    ctx.restore();
+}
+
+// 17. 존재의 근원 - 중앙에서 퍼지는 동심원
+function drawOrigin(opacity) {
+    if (opacity <= 0) return;
+    ctx.save();
+    ctx.globalAlpha = opacity * 0.5;
+
+    const cx = canvas.width / 2;
+    const cy = canvas.height / 2;
+    const time = Date.now() / 2000;
+
+    for (let i = 0; i < 5; i++) {
+        const r = 50 + i * 60 + (time % 1) * 60;
+        ctx.beginPath();
+        ctx.arc(cx, cy, r, 0, Math.PI * 2);
+        ctx.strokeStyle = `rgba(200, 200, 200, ${0.3 - i * 0.05})`;
+        ctx.lineWidth = 2;
+        ctx.stroke();
+    }
+
+    ctx.restore();
+}
+
+// 18. 절대 무 - 거의 아무것도 없음, 미세한 입자만
+function drawAbsoluteVoid(opacity) {
+    if (opacity <= 0) return;
+    ctx.save();
+    ctx.globalAlpha = opacity * 0.3;
+
+    // 아주 희미한 입자들
+    for (let i = 0; i < 20; i++) {
+        const x = Math.random() * canvas.width;
+        const y = Math.random() * canvas.height;
+        ctx.beginPath();
+        ctx.arc(x, y, 1, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(100, 100, 100, 0.5)';
+        ctx.fill();
+    }
+
+    ctx.restore();
+}
+
+// 19. 창조의 빛 - 황금빛 광선
+function drawCreationLight(opacity) {
+    if (opacity <= 0) return;
+    ctx.save();
+    ctx.globalAlpha = opacity;
+
+    const cx = canvas.width / 2;
+    const cy = canvas.height * 0.3;
+
+    // 중앙에서 퍼지는 황금빛
+    const gradient = ctx.createRadialGradient(cx, cy, 0, cx, cy, 300);
+    gradient.addColorStop(0, 'rgba(255, 215, 100, 0.6)');
+    gradient.addColorStop(0.5, 'rgba(255, 180, 50, 0.3)');
+    gradient.addColorStop(1, 'transparent');
+
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    // 빛줄기
+    ctx.strokeStyle = 'rgba(255, 220, 100, 0.3)';
+    ctx.lineWidth = 2;
+    for (let i = 0; i < 12; i++) {
+        const angle = (i / 12) * Math.PI * 2;
+        ctx.beginPath();
+        ctx.moveTo(cx, cy);
+        ctx.lineTo(cx + Math.cos(angle) * 400, cy + Math.sin(angle) * 400);
+        ctx.stroke();
+    }
+
+    ctx.restore();
+}
+
+// 20. 의식의 바다 - 파동치는 파란색 물결
+function drawConsciousnessSea(opacity) {
+    if (opacity <= 0) return;
+    ctx.save();
+    ctx.globalAlpha = opacity * 0.5;
+
+    const time = Date.now() / 1000;
+
+    for (let y = 0; y < canvas.height; y += 30) {
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        for (let x = 0; x < canvas.width; x += 10) {
+            const wave = Math.sin(x * 0.02 + time + y * 0.01) * 10;
+            ctx.lineTo(x, y + wave);
+        }
+        ctx.strokeStyle = `rgba(100, 150, 255, ${0.3 - y / canvas.height * 0.2})`;
+        ctx.lineWidth = 1;
+        ctx.stroke();
+    }
+
+    ctx.restore();
+}
+
+// 21. 시간의 무덤 - 떠다니는 시계/모래시계 형상
+function drawTimeTomb(opacity) {
+    if (opacity <= 0) return;
+    ctx.save();
+    ctx.globalAlpha = opacity * 0.5;
+
+    // 모래시계 형태들
+    const hourglasses = [
+        { x: 0.2, y: 0.4 }, { x: 0.5, y: 0.3 }, { x: 0.8, y: 0.6 }
+    ];
+
+    ctx.strokeStyle = 'rgba(180, 150, 100, 0.6)';
+    ctx.lineWidth = 2;
+
+    for (const h of hourglasses) {
+        const x = canvas.width * h.x;
+        const y = canvas.height * h.y;
+
+        ctx.beginPath();
+        ctx.moveTo(x - 15, y - 25);
+        ctx.lineTo(x + 15, y - 25);
+        ctx.lineTo(x, y);
+        ctx.lineTo(x + 15, y + 25);
+        ctx.lineTo(x - 15, y + 25);
+        ctx.lineTo(x, y);
+        ctx.closePath();
+        ctx.stroke();
+    }
+
+    ctx.restore();
+}
+
+// 22. 차원의 틈 - 공간이 찢어진 듯한 균열
+function drawDimensionRift(opacity) {
+    if (opacity <= 0) return;
+    ctx.save();
+    ctx.globalAlpha = opacity;
+
+    // 균열들
+    const rifts = [
+        { x1: 0.3, y1: 0.2, x2: 0.35, y2: 0.7 },
+        { x1: 0.7, y1: 0.1, x2: 0.65, y2: 0.6 }
+    ];
+
+    for (const r of rifts) {
+        const gradient = ctx.createLinearGradient(
+            canvas.width * r.x1, canvas.height * r.y1,
+            canvas.width * r.x2, canvas.height * r.y2
+        );
+        gradient.addColorStop(0, 'transparent');
+        gradient.addColorStop(0.5, 'rgba(150, 50, 255, 0.6)');
+        gradient.addColorStop(1, 'transparent');
+
+        ctx.strokeStyle = gradient;
+        ctx.lineWidth = 4;
+        ctx.beginPath();
+        ctx.moveTo(canvas.width * r.x1, canvas.height * r.y1);
+        ctx.bezierCurveTo(
+            canvas.width * (r.x1 + 0.1), canvas.height * (r.y1 + 0.2),
+            canvas.width * (r.x2 - 0.1), canvas.height * (r.y2 - 0.2),
+            canvas.width * r.x2, canvas.height * r.y2
+        );
+        ctx.stroke();
+    }
+
+    ctx.restore();
+}
+
+// 23. 혼돈의 소용돌이 - 붉은 회오리
+function drawChaosVortex(opacity) {
+    if (opacity <= 0) return;
+    ctx.save();
+    ctx.globalAlpha = opacity * 0.6;
+
+    const cx = canvas.width / 2;
+    const cy = canvas.height / 2;
+    const time = Date.now() / 2000;
+
+    ctx.strokeStyle = 'rgba(200, 50, 50, 0.5)';
+    ctx.lineWidth = 3;
+
+    for (let i = 0; i < 3; i++) {
+        ctx.beginPath();
+        for (let angle = 0; angle < Math.PI * 4; angle += 0.1) {
+            const r = 20 + angle * 25;
+            const x = cx + Math.cos(angle + time + i) * r;
+            const y = cy + Math.sin(angle + time + i) * r;
+            if (angle === 0) ctx.moveTo(x, y);
+            else ctx.lineTo(x, y);
+        }
+        ctx.stroke();
+    }
+
+    ctx.restore();
+}
+
+// 24. 결정화된 시공 - 육각형 결정 패턴
+function drawCrystalizedSpacetime(opacity) {
+    if (opacity <= 0) return;
+    ctx.save();
+    ctx.globalAlpha = opacity * 0.4;
+
+    ctx.strokeStyle = 'rgba(150, 220, 220, 0.5)';
+    ctx.lineWidth = 1;
+
+    const size = 40;
+    for (let x = 0; x < canvas.width + size; x += size * 1.5) {
+        for (let y = 0; y < canvas.height + size; y += size * 1.7) {
+            const offsetX = (Math.floor(y / (size * 1.7)) % 2) * size * 0.75;
+            drawHexagon(x + offsetX, y, size / 2);
+        }
+    }
+
+    function drawHexagon(cx, cy, r) {
+        ctx.beginPath();
+        for (let i = 0; i < 6; i++) {
+            const angle = (i / 6) * Math.PI * 2 - Math.PI / 2;
+            const x = cx + Math.cos(angle) * r;
+            const y = cy + Math.sin(angle) * r;
+            if (i === 0) ctx.moveTo(x, y);
+            else ctx.lineTo(x, y);
+        }
+        ctx.closePath();
+        ctx.stroke();
+    }
+
+    ctx.restore();
+}
+
+// 25. 에테르 평원 - 부드럽게 흐르는 안개
+function drawEtherPlain(opacity) {
+    if (opacity <= 0) return;
+    ctx.save();
+    ctx.globalAlpha = opacity * 0.4;
+
+    const time = Date.now() / 5000;
+
+    for (let i = 0; i < 5; i++) {
+        const y = canvas.height * (0.2 + i * 0.15);
+        const offset = Math.sin(time + i) * 50;
+
+        const gradient = ctx.createLinearGradient(0, y - 30, 0, y + 30);
+        gradient.addColorStop(0, 'transparent');
+        gradient.addColorStop(0.5, 'rgba(180, 200, 220, 0.3)');
+        gradient.addColorStop(1, 'transparent');
+
+        ctx.fillStyle = gradient;
+        ctx.fillRect(offset, y - 30, canvas.width, 60);
+    }
+
+    ctx.restore();
+}
+
+// 26. 항성의 요람 - 오렌지빛 가스 구름
+function drawStellarNursery(opacity) {
+    if (opacity <= 0) return;
+    ctx.save();
+    ctx.globalAlpha = opacity * 0.5;
+
+    const clouds = [
+        { x: 0.2, y: 0.3, r: 100 },
+        { x: 0.6, y: 0.5, r: 120 },
+        { x: 0.8, y: 0.2, r: 80 }
+    ];
+
+    for (const c of clouds) {
+        const x = canvas.width * c.x;
+        const y = canvas.height * c.y;
+        const gradient = ctx.createRadialGradient(x, y, 0, x, y, c.r);
+        gradient.addColorStop(0, 'rgba(255, 150, 50, 0.4)');
+        gradient.addColorStop(0.6, 'rgba(255, 100, 30, 0.2)');
+        gradient.addColorStop(1, 'transparent');
+
+        ctx.fillStyle = gradient;
+        ctx.fillRect(x - c.r, y - c.r, c.r * 2, c.r * 2);
+    }
+
+    ctx.restore();
+}
+
+// 27. 초신성 잔해 - 폭발하는 붉은 파편
+function drawSupernovaRemnant(opacity) {
+    if (opacity <= 0) return;
+    ctx.save();
+    ctx.globalAlpha = opacity;
+
+    const cx = canvas.width / 2;
+    const cy = canvas.height / 2;
+    const time = Date.now() / 1000;
+
+    // 폭발 파편
+    for (let i = 0; i < 20; i++) {
+        const angle = (i / 20) * Math.PI * 2;
+        const dist = 50 + Math.sin(time * 2 + i) * 30 + 100;
+        const x = cx + Math.cos(angle) * dist;
+        const y = cy + Math.sin(angle) * dist;
+
+        ctx.beginPath();
+        ctx.arc(x, y, 3, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255, ${100 + i * 5}, 50, 0.6)`;
+        ctx.fill();
+    }
+
+    // 중심 광원
+    const gradient = ctx.createRadialGradient(cx, cy, 0, cx, cy, 60);
+    gradient.addColorStop(0, 'rgba(255, 200, 150, 0.5)');
+    gradient.addColorStop(1, 'transparent');
+    ctx.fillStyle = gradient;
+    ctx.fillRect(cx - 60, cy - 60, 120, 120);
+
+    ctx.restore();
+}
+
+// 28. 우주의 동결점 - 얼음 결정
+function drawCosmicFreeze(opacity) {
+    if (opacity <= 0) return;
+    ctx.save();
+    ctx.globalAlpha = opacity * 0.5;
+
+    ctx.strokeStyle = 'rgba(200, 230, 255, 0.6)';
+    ctx.lineWidth = 1;
+
+    // 눈송이/얼음 결정 패턴
+    const crystals = [
+        { x: 0.2, y: 0.3 }, { x: 0.5, y: 0.5 }, { x: 0.8, y: 0.4 },
+        { x: 0.3, y: 0.7 }, { x: 0.7, y: 0.2 }
+    ];
+
+    for (const c of crystals) {
+        const x = canvas.width * c.x;
+        const y = canvas.height * c.y;
+
+        for (let i = 0; i < 6; i++) {
+            const angle = (i / 6) * Math.PI * 2;
+            ctx.beginPath();
+            ctx.moveTo(x, y);
+            ctx.lineTo(x + Math.cos(angle) * 30, y + Math.sin(angle) * 30);
+            ctx.stroke();
+
+            // 가지
+            const midX = x + Math.cos(angle) * 15;
+            const midY = y + Math.sin(angle) * 15;
+            ctx.beginPath();
+            ctx.moveTo(midX, midY);
+            ctx.lineTo(midX + Math.cos(angle + 0.5) * 10, midY + Math.sin(angle + 0.5) * 10);
+            ctx.moveTo(midX, midY);
+            ctx.lineTo(midX + Math.cos(angle - 0.5) * 10, midY + Math.sin(angle - 0.5) * 10);
+            ctx.stroke();
+        }
+    }
+
+    ctx.restore();
+}
+
+// 29. 암흑 에너지 해 - 어두운 파동
+function drawDarkEnergySea(opacity) {
+    if (opacity <= 0) return;
+    ctx.save();
+    ctx.globalAlpha = opacity * 0.4;
+
+    const time = Date.now() / 2000;
+
+    for (let i = 0; i < 8; i++) {
+        const y = canvas.height * (0.1 + i * 0.1);
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        for (let x = 0; x < canvas.width; x += 5) {
+            const wave = Math.sin(x * 0.01 + time + i * 0.5) * 20;
+            ctx.lineTo(x, y + wave);
+        }
+        ctx.strokeStyle = `rgba(30, 30, 50, ${0.5 - i * 0.05})`;
+        ctx.lineWidth = 3;
+        ctx.stroke();
+    }
+
+    ctx.restore();
+}
+
+// 30. 중력파 폭풍 - 동심원 파동
+function drawGravityWaveStorm(opacity) {
+    if (opacity <= 0) return;
+    ctx.save();
+    ctx.globalAlpha = opacity * 0.5;
+
+    const time = Date.now() / 1000;
+    const sources = [
+        { x: 0.3, y: 0.4 }, { x: 0.7, y: 0.6 }
+    ];
+
+    for (const s of sources) {
+        const cx = canvas.width * s.x;
+        const cy = canvas.height * s.y;
+
+        for (let i = 0; i < 5; i++) {
+            const r = ((time * 50 + i * 40) % 200);
+            ctx.beginPath();
+            ctx.arc(cx, cy, r, 0, Math.PI * 2);
+            ctx.strokeStyle = `rgba(150, 150, 200, ${0.5 - r / 400})`;
+            ctx.lineWidth = 2;
+            ctx.stroke();
+        }
+    }
+
+    ctx.restore();
+}
+
+// ==================== 확장 배경 효과 함수들 (스테이지 42-101) ====================
+
+// 배경용 우주 먼지 (사이드 오브젝트와 구분)
+function drawCosmicDustBg(opacity) {
+    if (opacity <= 0) return;
+    ctx.save();
+    ctx.globalAlpha = opacity * 0.4;
+    const time = Date.now() / 2000;
+    for (let i = 0; i < 30; i++) {
+        const x = (canvas.width * 0.1 + i * 30 + Math.sin(time + i) * 20) % canvas.width;
+        const y = (canvas.height * 0.2 + i * 25 + Math.cos(time + i) * 15) % canvas.height;
+        ctx.fillStyle = `rgba(200, 200, 220, ${0.3 + Math.sin(time + i) * 0.2})`;
+        ctx.beginPath();
+        ctx.arc(x, y, 1.5, 0, Math.PI * 2);
+        ctx.fill();
+    }
+    ctx.restore();
+}
+
+// 배경용 혼돈 소용돌이 (사이드 오브젝트와 구분)
+function drawChaosVortexBg(opacity) {
+    if (opacity <= 0) return;
+    ctx.save();
+    ctx.globalAlpha = opacity * 0.4;
+    const time = Date.now() / 800;
+    const cx = canvas.width * 0.5;
+    const cy = canvas.height * 0.5;
+    for (let i = 0; i < 6; i++) {
+        ctx.beginPath();
+        ctx.arc(cx, cy, 50 + i * 30, time + i * 0.3, time + i * 0.3 + Math.PI * 1.5);
+        ctx.strokeStyle = `hsla(${(time * 60 + i * 40) % 360}, 60%, 50%, ${0.4 - i * 0.05})`;
+        ctx.lineWidth = 2;
+        ctx.stroke();
+    }
+    ctx.restore();
+}
+
+// 양자 영역 (Quantum Realm)
+function drawQuantumRealm(opacity) {
+    if (opacity <= 0) return;
+    ctx.save();
+    ctx.globalAlpha = opacity * 0.5;
+    const time = Date.now() / 400;
+    for (let i = 0; i < 20; i++) {
+        const x = canvas.width * (0.2 + 0.6 * Math.random());
+        const y = canvas.height * (0.2 + 0.6 * Math.random());
+        const phase = (time + i * 0.5) % (Math.PI * 2);
+        ctx.fillStyle = `rgba(150, 100, 255, ${0.3 + Math.sin(phase) * 0.3})`;
+        ctx.beginPath();
+        ctx.arc(x, y, 3 + Math.sin(phase) * 2, 0, Math.PI * 2);
+        ctx.fill();
+    }
+    ctx.restore();
+}
+
+// 현실 경계 (Reality Border)
+function drawRealityBorder(opacity) {
+    if (opacity <= 0) return;
+    ctx.save();
+    ctx.globalAlpha = opacity * 0.4;
+    const time = Date.now() / 1000;
+    for (let i = 0; i < 3; i++) {
+        const y = canvas.height * (0.3 + i * 0.2);
+        const wave = Math.sin(time + i) * 20;
+        ctx.beginPath();
+        ctx.moveTo(0, y + wave);
+        ctx.bezierCurveTo(canvas.width * 0.3, y - wave, canvas.width * 0.7, y + wave, canvas.width, y - wave);
+        ctx.strokeStyle = `rgba(100, 200, 255, ${0.5 - i * 0.1})`;
+        ctx.lineWidth = 2;
+        ctx.stroke();
+    }
+    ctx.restore();
+}
+
+// 가능성의 바다 (Sea of Possibilities)
+function drawPossibilitySea(opacity) {
+    if (opacity <= 0) return;
+    ctx.save();
+    ctx.globalAlpha = opacity * 0.3;
+    const time = Date.now() / 1500;
+    const gradient = ctx.createRadialGradient(canvas.width / 2, canvas.height / 2, 0, canvas.width / 2, canvas.height / 2, canvas.width * 0.4);
+    gradient.addColorStop(0, `rgba(100, 150, 255, ${0.3 + Math.sin(time) * 0.1})`);
+    gradient.addColorStop(0.5, `rgba(150, 100, 200, ${0.2 + Math.sin(time + 1) * 0.1})`);
+    gradient.addColorStop(1, 'transparent');
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.restore();
+}
+
+// 영혼의 통로 (Soul Passage)
+function drawSoulPassage(opacity) {
+    if (opacity <= 0) return;
+    ctx.save();
+    ctx.globalAlpha = opacity * 0.5;
+    const time = Date.now() / 800;
+    const cx = canvas.width / 2;
+    const cy = canvas.height / 2;
+    for (let i = 0; i < 8; i++) {
+        const angle = (i / 8) * Math.PI * 2 + time * 0.2;
+        const r = 100 + Math.sin(time + i) * 30;
+        ctx.beginPath();
+        ctx.moveTo(cx, cy);
+        ctx.lineTo(cx + Math.cos(angle) * r, cy + Math.sin(angle) * r);
+        ctx.strokeStyle = `rgba(200, 180, 255, ${0.4 - i * 0.04})`;
+        ctx.lineWidth = 3;
+        ctx.stroke();
+    }
+    ctx.restore();
+}
+
+// 신성의 문 (Divine Gate)
+function drawDivineGate(opacity) {
+    if (opacity <= 0) return;
+    ctx.save();
+    ctx.globalAlpha = opacity * 0.6;
+    const time = Date.now() / 1200;
+    const cx = canvas.width / 2;
+    const cy = canvas.height * 0.4;
+    const glow = 0.5 + Math.sin(time) * 0.2;
+    const gradient = ctx.createRadialGradient(cx, cy, 0, cx, cy, 80);
+    gradient.addColorStop(0, `rgba(255, 223, 186, ${glow})`);
+    gradient.addColorStop(0.5, `rgba(255, 200, 150, ${glow * 0.5})`);
+    gradient.addColorStop(1, 'transparent');
+    ctx.fillStyle = gradient;
+    ctx.beginPath();
+    ctx.arc(cx, cy, 80, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+}
+
+// 우주적 각성 (Cosmic Awakening)
+function drawCosmicAwakening(opacity) {
+    if (opacity <= 0) return;
+    ctx.save();
+    ctx.globalAlpha = opacity * 0.4;
+    const time = Date.now() / 600;
+    for (let i = 0; i < 12; i++) {
+        const angle = (i / 12) * Math.PI * 2;
+        const x = canvas.width / 2 + Math.cos(angle + time * 0.3) * 150;
+        const y = canvas.height / 2 + Math.sin(angle + time * 0.3) * 100;
+        ctx.fillStyle = `hsla(${(i * 30 + time * 20) % 360}, 70%, 60%, 0.5)`;
+        ctx.beginPath();
+        ctx.arc(x, y, 5, 0, Math.PI * 2);
+        ctx.fill();
+    }
+    ctx.restore();
+}
+
+// 초월적 인식 (Transcendent Mind)
+function drawTranscendentMind(opacity) {
+    if (opacity <= 0) return;
+    ctx.save();
+    ctx.globalAlpha = opacity * 0.5;
+    const time = Date.now() / 1000;
+    const cx = canvas.width / 2;
+    const cy = canvas.height / 2;
+    // 눈 모양
+    ctx.beginPath();
+    ctx.ellipse(cx, cy, 60, 30, 0, 0, Math.PI * 2);
+    ctx.strokeStyle = `rgba(200, 150, 255, ${0.5 + Math.sin(time) * 0.2})`;
+    ctx.lineWidth = 2;
+    ctx.stroke();
+    // 동공
+    ctx.beginPath();
+    ctx.arc(cx + Math.sin(time) * 10, cy, 15, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(100, 50, 200, ${0.6 + Math.sin(time) * 0.2})`;
+    ctx.fill();
+    ctx.restore();
+}
+
+// 완전한 조화 (Perfect Harmony)
+function drawPerfectHarmony(opacity) {
+    if (opacity <= 0) return;
+    ctx.save();
+    ctx.globalAlpha = opacity * 0.4;
+    const time = Date.now() / 1500;
+    const cx = canvas.width / 2;
+    const cy = canvas.height / 2;
+    for (let i = 0; i < 6; i++) {
+        const angle = (i / 6) * Math.PI * 2 + time * 0.1;
+        const x = cx + Math.cos(angle) * 80;
+        const y = cy + Math.sin(angle) * 80;
+        ctx.beginPath();
+        ctx.arc(x, y, 20, 0, Math.PI * 2);
+        ctx.strokeStyle = `rgba(${150 + i * 15}, ${200 - i * 10}, ${100 + i * 20}, 0.5)`;
+        ctx.lineWidth = 2;
+        ctx.stroke();
+    }
+    ctx.restore();
+}
+
+// 무한의 춤 (Infinite Dance)
+function drawInfiniteDance(opacity) {
+    if (opacity <= 0) return;
+    ctx.save();
+    ctx.globalAlpha = opacity * 0.5;
+    const time = Date.now() / 500;
+    for (let i = 0; i < 10; i++) {
+        const t = time + i * 0.3;
+        const x = canvas.width / 2 + Math.cos(t) * (50 + i * 10);
+        const y = canvas.height / 2 + Math.sin(t * 2) * (30 + i * 5);
+        ctx.fillStyle = `hsla(${(t * 30) % 360}, 60%, 60%, 0.6)`;
+        ctx.beginPath();
+        ctx.arc(x, y, 4, 0, Math.PI * 2);
+        ctx.fill();
+    }
+    ctx.restore();
+}
+
+// 영원의 불꽃 (Eternal Flame)
+function drawEternalFlame(opacity) {
+    if (opacity <= 0) return;
+    ctx.save();
+    ctx.globalAlpha = opacity * 0.5;
+    const time = Date.now() / 200;
+    const cx = canvas.width / 2;
+    const cy = canvas.height * 0.6;
+    for (let i = 0; i < 8; i++) {
+        const flicker = Math.sin(time + i * 2) * 5;
+        const h = 50 + i * 10 + flicker;
+        const gradient = ctx.createLinearGradient(cx, cy, cx, cy - h);
+        gradient.addColorStop(0, 'rgba(255, 100, 50, 0.6)');
+        gradient.addColorStop(0.5, 'rgba(255, 200, 50, 0.4)');
+        gradient.addColorStop(1, 'transparent');
+        ctx.fillStyle = gradient;
+        ctx.beginPath();
+        ctx.moveTo(cx - 15 + i * 2, cy);
+        ctx.quadraticCurveTo(cx + flicker, cy - h * 0.7, cx, cy - h);
+        ctx.quadraticCurveTo(cx - flicker, cy - h * 0.7, cx + 15 - i * 2, cy);
+        ctx.fill();
+    }
+    ctx.restore();
+}
+
+// 심연의 노래 (Song of the Abyss)
+function drawAbyssSong(opacity) {
+    if (opacity <= 0) return;
+    ctx.save();
+    ctx.globalAlpha = opacity * 0.4;
+    const time = Date.now() / 800;
+    for (let i = 0; i < 5; i++) {
+        const y = canvas.height * (0.3 + i * 0.1);
+        ctx.beginPath();
+        for (let x = 0; x <= canvas.width; x += 10) {
+            const wave = Math.sin(x * 0.02 + time + i) * 15;
+            if (x === 0) ctx.moveTo(x, y + wave);
+            else ctx.lineTo(x, y + wave);
+        }
+        ctx.strokeStyle = `rgba(100, 50, 150, ${0.5 - i * 0.08})`;
+        ctx.lineWidth = 2;
+        ctx.stroke();
+    }
+    ctx.restore();
+}
+
+// 우주의 숨결 (Cosmic Breath)
+function drawCosmicBreath(opacity) {
+    if (opacity <= 0) return;
+    ctx.save();
+    ctx.globalAlpha = opacity * 0.3;
+    const time = Date.now() / 2000;
+    const scale = 1 + Math.sin(time) * 0.2;
+    const gradient = ctx.createRadialGradient(canvas.width / 2, canvas.height / 2, 0, canvas.width / 2, canvas.height / 2, canvas.width * 0.3 * scale);
+    gradient.addColorStop(0, 'rgba(100, 150, 200, 0.4)');
+    gradient.addColorStop(0.7, 'rgba(50, 100, 150, 0.2)');
+    gradient.addColorStop(1, 'transparent');
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.restore();
+}
+
+// 빛의 바다 (Ocean of Light)
+function drawLightOcean(opacity) {
+    if (opacity <= 0) return;
+    ctx.save();
+    ctx.globalAlpha = opacity * 0.4;
+    const time = Date.now() / 1000;
+    for (let i = 0; i < 20; i++) {
+        const x = (time * 30 + i * 50) % (canvas.width + 100) - 50;
+        const y = canvas.height * (0.3 + (i % 5) * 0.1) + Math.sin(time + i) * 10;
+        ctx.fillStyle = `rgba(255, 255, 200, ${0.3 + Math.sin(time + i) * 0.2})`;
+        ctx.beginPath();
+        ctx.arc(x, y, 4, 0, Math.PI * 2);
+        ctx.fill();
+    }
+    ctx.restore();
+}
+
+// 어둠의 왕좌 (Throne of Darkness)
+function drawDarknessThrone(opacity) {
+    if (opacity <= 0) return;
+    ctx.save();
+    ctx.globalAlpha = opacity * 0.5;
+    const cx = canvas.width / 2;
+    const cy = canvas.height * 0.5;
+    const gradient = ctx.createRadialGradient(cx, cy, 0, cx, cy, 100);
+    gradient.addColorStop(0, 'rgba(0, 0, 0, 0.8)');
+    gradient.addColorStop(0.5, 'rgba(30, 0, 50, 0.5)');
+    gradient.addColorStop(1, 'transparent');
+    ctx.fillStyle = gradient;
+    ctx.beginPath();
+    ctx.arc(cx, cy, 100, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+}
+
+// 최초의 기억 (First Memory)
+function drawFirstMemory(opacity) {
+    if (opacity <= 0) return;
+    ctx.save();
+    ctx.globalAlpha = opacity * 0.4;
+    const time = Date.now() / 1500;
+    for (let i = 0; i < 8; i++) {
+        const x = canvas.width * (0.2 + (i % 4) * 0.2);
+        const y = canvas.height * (0.3 + Math.floor(i / 4) * 0.3);
+        const pulse = 0.5 + Math.sin(time + i) * 0.3;
+        ctx.fillStyle = `rgba(255, 220, 180, ${pulse})`;
+        ctx.beginPath();
+        ctx.arc(x, y, 8, 0, Math.PI * 2);
+        ctx.fill();
+    }
+    ctx.restore();
+}
+
+// 마지막 속삭임 (Last Whisper)
+function drawLastWhisper(opacity) {
+    if (opacity <= 0) return;
+    ctx.save();
+    ctx.globalAlpha = opacity * 0.3;
+    const time = Date.now() / 2000;
+    for (let i = 0; i < 15; i++) {
+        const x = canvas.width * (0.1 + Math.random() * 0.8);
+        const y = canvas.height * (0.1 + Math.random() * 0.8);
+        const size = 1 + Math.sin(time + i) * 0.5;
+        ctx.fillStyle = 'rgba(200, 200, 220, 0.4)';
+        ctx.beginPath();
+        ctx.arc(x, y, size, 0, Math.PI * 2);
+        ctx.fill();
+    }
+    ctx.restore();
+}
+
+// 세계의 심장 (Heart of the World)
+function drawWorldHeart(opacity) {
+    if (opacity <= 0) return;
+    ctx.save();
+    ctx.globalAlpha = opacity * 0.5;
+    const time = Date.now() / 500;
+    const beat = 1 + Math.sin(time * 3) * 0.15;
+    const cx = canvas.width / 2;
+    const cy = canvas.height / 2;
+    ctx.save();
+    ctx.translate(cx, cy);
+    ctx.scale(beat, beat);
+    const gradient = ctx.createRadialGradient(0, 0, 0, 0, 0, 50);
+    gradient.addColorStop(0, 'rgba(255, 100, 150, 0.7)');
+    gradient.addColorStop(0.5, 'rgba(200, 50, 100, 0.4)');
+    gradient.addColorStop(1, 'transparent');
+    ctx.fillStyle = gradient;
+    ctx.beginPath();
+    ctx.moveTo(0, 15);
+    ctx.bezierCurveTo(-40, -30, -40, -50, 0, -25);
+    ctx.bezierCurveTo(40, -50, 40, -30, 0, 15);
+    ctx.fill();
+    ctx.restore();
+    ctx.restore();
+}
+
+// 운명의 실 (Thread of Fate)
+function drawFateThread(opacity) {
+    if (opacity <= 0) return;
+    ctx.save();
+    ctx.globalAlpha = opacity * 0.4;
+    const time = Date.now() / 1000;
+    ctx.beginPath();
+    ctx.moveTo(0, canvas.height * 0.3);
+    for (let x = 0; x <= canvas.width; x += 20) {
+        const y = canvas.height * 0.5 + Math.sin(x * 0.01 + time) * 50 + Math.cos(x * 0.02 + time * 0.5) * 30;
+        ctx.lineTo(x, y);
+    }
+    ctx.strokeStyle = 'rgba(255, 215, 0, 0.5)';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+    ctx.restore();
+}
+
+// 절대자의 꿈 (Dream of the Absolute)
+function drawAbsoluteDream(opacity) {
+    if (opacity <= 0) return;
+    ctx.save();
+    ctx.globalAlpha = opacity * 0.4;
+    const time = Date.now() / 1500;
+    for (let i = 0; i < 5; i++) {
+        const cx = canvas.width * (0.2 + i * 0.15);
+        const cy = canvas.height * 0.5 + Math.sin(time + i) * 30;
+        const r = 30 + Math.sin(time * 0.5 + i) * 10;
+        const gradient = ctx.createRadialGradient(cx, cy, 0, cx, cy, r);
+        gradient.addColorStop(0, `rgba(${150 + i * 20}, ${100 + i * 15}, ${200 - i * 10}, 0.5)`);
+        gradient.addColorStop(1, 'transparent');
+        ctx.fillStyle = gradient;
+        ctx.beginPath();
+        ctx.arc(cx, cy, r, 0, Math.PI * 2);
+        ctx.fill();
+    }
+    ctx.restore();
+}
+
+// 천상의 정원 (Celestial Garden)
+function drawCelestialGarden(opacity) {
+    if (opacity <= 0) return;
+    ctx.save();
+    ctx.globalAlpha = opacity * 0.4;
+    const time = Date.now() / 1200;
+    for (let i = 0; i < 12; i++) {
+        const x = canvas.width * (0.1 + (i % 4) * 0.25);
+        const y = canvas.height * (0.2 + Math.floor(i / 4) * 0.25);
+        const bloom = 0.5 + Math.sin(time + i * 0.5) * 0.3;
+        ctx.fillStyle = `hsla(${(i * 30) % 360}, 60%, 70%, ${bloom})`;
+        ctx.beginPath();
+        for (let p = 0; p < 5; p++) {
+            const angle = (p / 5) * Math.PI * 2;
+            const px = x + Math.cos(angle) * 10;
+            const py = y + Math.sin(angle) * 10;
+            ctx.arc(px, py, 5, 0, Math.PI * 2);
+        }
+        ctx.fill();
+    }
+    ctx.restore();
+}
+
+// 신들의 안식처 (Rest of the Gods)
+function drawGodsRest(opacity) {
+    if (opacity <= 0) return;
+    ctx.save();
+    ctx.globalAlpha = opacity * 0.5;
+    const time = Date.now() / 2000;
+    const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+    gradient.addColorStop(0, `rgba(255, 223, 186, ${0.3 + Math.sin(time) * 0.1})`);
+    gradient.addColorStop(0.5, `rgba(255, 200, 150, ${0.2 + Math.sin(time + 1) * 0.1})`);
+    gradient.addColorStop(1, `rgba(200, 150, 255, ${0.3 + Math.sin(time + 2) * 0.1})`);
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.restore();
+}
+
+// 영원한 황혼 (Eternal Twilight)
+function drawEternalTwilight(opacity) {
+    if (opacity <= 0) return;
+    ctx.save();
+    ctx.globalAlpha = opacity * 0.4;
+    const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+    gradient.addColorStop(0, 'rgba(100, 50, 150, 0.4)');
+    gradient.addColorStop(0.5, 'rgba(200, 100, 50, 0.3)');
+    gradient.addColorStop(1, 'rgba(50, 50, 100, 0.4)');
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.restore();
+}
+
+// 창세의 불꽃 (Flame of Genesis)
+function drawGenesisFlame(opacity) {
+    if (opacity <= 0) return;
+    ctx.save();
+    ctx.globalAlpha = opacity * 0.5;
+    const time = Date.now() / 300;
+    const cx = canvas.width / 2;
+    const cy = canvas.height / 2;
+    for (let i = 0; i < 6; i++) {
+        const angle = (i / 6) * Math.PI * 2 + time * 0.1;
+        const x = cx + Math.cos(angle) * 60;
+        const y = cy + Math.sin(angle) * 60;
+        const gradient = ctx.createRadialGradient(x, y, 0, x, y, 30);
+        gradient.addColorStop(0, 'rgba(255, 200, 100, 0.6)');
+        gradient.addColorStop(0.5, 'rgba(255, 100, 50, 0.3)');
+        gradient.addColorStop(1, 'transparent');
+        ctx.fillStyle = gradient;
+        ctx.beginPath();
+        ctx.arc(x, y, 30, 0, Math.PI * 2);
+        ctx.fill();
+    }
+    ctx.restore();
+}
+
+// 종말의 서곡 (Prelude to the Apocalypse)
+function drawApocalypsePrelude(opacity) {
+    if (opacity <= 0) return;
+    ctx.save();
+    ctx.globalAlpha = opacity * 0.4;
+    const time = Date.now() / 500;
+    for (let i = 0; i < 8; i++) {
+        const x = canvas.width * (0.1 + Math.random() * 0.8);
+        const y = -50 + (time * 100 + i * 100) % (canvas.height + 100);
+        ctx.strokeStyle = `rgba(255, ${100 + i * 15}, 50, ${0.5 - i * 0.05})`;
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+        ctx.lineTo(x + Math.random() * 20 - 10, y + 50);
+        ctx.stroke();
+    }
+    ctx.restore();
+}
+
+// 궁극의 영역 (Ultimate Realm)
+function drawUltimateRealm(opacity) {
+    if (opacity <= 0) return;
+    ctx.save();
+    ctx.globalAlpha = opacity * 0.5;
+    const time = Date.now() / 1000;
+    const cx = canvas.width / 2;
+    const cy = canvas.height / 2;
+    for (let i = 0; i < 3; i++) {
+        const r = 80 + i * 40 + Math.sin(time + i) * 10;
+        ctx.beginPath();
+        ctx.arc(cx, cy, r, 0, Math.PI * 2);
+        ctx.strokeStyle = `rgba(${200 - i * 30}, ${150 + i * 20}, 255, ${0.5 - i * 0.1})`;
+        ctx.lineWidth = 3;
+        ctx.stroke();
+    }
+    ctx.restore();
+}
+
+// 절대자의 왕좌 (Throne of the Absolute)
+function drawAbsoluteThrone(opacity) {
+    if (opacity <= 0) return;
+    ctx.save();
+    ctx.globalAlpha = opacity * 0.6;
+    const time = Date.now() / 800;
+    const cx = canvas.width / 2;
+    const cy = canvas.height * 0.4;
+    // 왕관
+    ctx.fillStyle = `rgba(255, 215, 0, ${0.6 + Math.sin(time) * 0.2})`;
+    ctx.beginPath();
+    ctx.moveTo(cx - 40, cy);
+    ctx.lineTo(cx - 30, cy - 30);
+    ctx.lineTo(cx - 15, cy - 10);
+    ctx.lineTo(cx, cy - 40);
+    ctx.lineTo(cx + 15, cy - 10);
+    ctx.lineTo(cx + 30, cy - 30);
+    ctx.lineTo(cx + 40, cy);
+    ctx.closePath();
+    ctx.fill();
+    // 광채
+    const gradient = ctx.createRadialGradient(cx, cy, 0, cx, cy, 100);
+    gradient.addColorStop(0, `rgba(255, 255, 200, ${0.4 + Math.sin(time * 2) * 0.2})`);
+    gradient.addColorStop(0.5, `rgba(255, 200, 100, ${0.2 + Math.sin(time * 2) * 0.1})`);
+    gradient.addColorStop(1, 'transparent');
+    ctx.fillStyle = gradient;
+    ctx.beginPath();
+    ctx.arc(cx, cy, 100, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+}
+
 // ==================== 양옆 오브젝트 그리기 ====================
 function drawSideObjects(progress, groundYOffset) {
     ctx.save();
 
-    // 오브젝트는 땅과 함께 아래로 내려감 (배경 진행도에 따라)
-    // groundYOffset은 양수이고, Y에 더하면 아래로 이동
     const baseY = groundYOffset;
+    const p = progress;
 
-    // 1. 겨울 밤 ~ 높은 하늘: 나무, 집
-    if (progress < 0.2) {
-        const opacity = 1 - smoothStep(0.1, 0.2, progress);
+    // 1. 겨울 밤 ~ 높은 하늘 (0 ~ 0.05): 나무, 집
+    if (p < 0.08) {
+        const opacity = 1 - smoothStep(0.04, 0.08, p);
         ctx.globalAlpha = opacity;
-
-        // 왼쪽 나무들
         drawTree(-30, canvas.height - 200 + baseY, 1);
         drawTree(40, canvas.height - 180 + baseY, 0.8);
-
-        // 오른쪽 집
         drawHouse(canvas.width - 100, canvas.height - 160 + baseY, 0.7);
-
-        // 오른쪽 나무
         drawTree(canvas.width - 50, canvas.height - 190 + baseY, 0.9);
     }
 
-    // 2. 성층권: 구름, 비행기
-    if (progress > 0.1 && progress < 0.35) {
-        const opacity = smoothStep(0.1, 0.18, progress) * (1 - smoothStep(0.28, 0.35, progress));
+    // 2. 성층권 (0.04 ~ 0.12): 구름, 비행기
+    if (p > 0.03 && p < 0.15) {
+        const opacity = smoothStep(0.03, 0.06, p) * (1 - smoothStep(0.10, 0.15, p));
         ctx.globalAlpha = opacity;
-
-        // 구름들
         drawCloud(50, 100 + baseY, 60);
         drawCloud(canvas.width - 120, 150 + baseY, 50);
-        drawCloud(30, 250 + baseY, 40);
-        drawCloud(canvas.width - 80, 200 + baseY, 45);
-
-        // 비행기
         drawAirplane(canvas.width - 150, 180 + baseY);
     }
 
-    // 3. 우주 진입 ~ 깊은 우주: 위성, 우주선
-    if (progress > 0.2 && progress < 0.5) {
-        const opacity = smoothStep(0.2, 0.28, progress) * (1 - smoothStep(0.42, 0.5, progress));
+    // 3. 우주 진입 (0.08 ~ 0.20): 위성, 우주선
+    if (p > 0.06 && p < 0.22) {
+        const opacity = smoothStep(0.06, 0.10, p) * (1 - smoothStep(0.18, 0.22, p));
         ctx.globalAlpha = opacity;
-
-        // 위성
         drawSatellite(80, 150 + baseY);
         drawSatellite(canvas.width - 100, 300 + baseY);
-
-        // 우주 정거장
         drawSpaceStation(canvas.width - 180, 120 + baseY);
     }
 
-    // 4. 은하계: 행성들
-    if (progress > 0.35 && progress < 0.65) {
-        const opacity = smoothStep(0.35, 0.42, progress) * (1 - smoothStep(0.58, 0.65, progress));
+    // 4. 은하계 (0.12 ~ 0.28): 행성들
+    if (p > 0.10 && p < 0.30) {
+        const opacity = smoothStep(0.10, 0.14, p) * (1 - smoothStep(0.26, 0.30, p));
         ctx.globalAlpha = opacity;
-
-        // 행성들
         drawPlanet(60, 180 + baseY, 35, '#e74c3c', true);
         drawPlanet(canvas.width - 80, 130 + baseY, 50, '#f39c12', false);
-        drawPlanet(40, 350 + baseY, 25, '#3498db', false);
-        drawPlanet(canvas.width - 60, 320 + baseY, 30, '#9b59b6', true);
     }
 
-    // 5. 은하 외곽 ~ 태양계 밖: 소행성대
-    if (progress > 0.45 && progress < 0.7) {
-        const opacity = smoothStep(0.45, 0.52, progress) * (1 - smoothStep(0.63, 0.7, progress));
+    // 5. 블랙홀/퀘이사 (0.18 ~ 0.35): 소행성, 잔해
+    if (p > 0.16 && p < 0.38) {
+        const opacity = smoothStep(0.16, 0.20, p) * (1 - smoothStep(0.34, 0.38, p));
         ctx.globalAlpha = opacity;
-
-        // 소행성들
-        for (let i = 0; i < 8; i++) {
-            const x = (i % 2 === 0) ? 20 + i * 15 : canvas.width - 30 - i * 12;
-            const y = 80 + i * 55 + baseY;
-            drawAsteroid(x, y, 8 + i * 2);
+        for (let i = 0; i < 5; i++) {
+            const x = (i % 2 === 0) ? 20 + i * 20 : canvas.width - 40 - i * 15;
+            drawAsteroid(x, 100 + i * 70 + baseY, 10 + i * 3);
         }
     }
 
-    // 6. 블랙홀 지대: 빨려들어가는 물질
-    if (progress > 0.6 && progress < 0.8) {
-        const opacity = smoothStep(0.6, 0.67, progress) * (1 - smoothStep(0.73, 0.8, progress));
+    // 6. 다중우주 (0.28 ~ 0.45): 에너지 파동, 시공간 균열
+    if (p > 0.26 && p < 0.48) {
+        const opacity = smoothStep(0.26, 0.30, p) * (1 - smoothStep(0.44, 0.48, p));
         ctx.globalAlpha = opacity;
-
-        // 빨려들어가는 잔해들
-        for (let i = 0; i < 6; i++) {
-            const angle = (Date.now() / 2000 + i) % (Math.PI * 2);
-            const x = (i % 2 === 0) ? 60 + Math.cos(angle) * 20 : canvas.width - 60 + Math.sin(angle) * 20;
-            const y = 120 + i * 65 + baseY;
-            drawDebris(x, y, 5 + i * 2, angle);
-        }
-    }
-
-    // 7. 퀘이사 ~ 우주 거대구조: 에너지 파동
-    if (progress > 0.7 && progress < 0.9) {
-        const opacity = smoothStep(0.7, 0.76, progress) * (1 - smoothStep(0.84, 0.9, progress));
-        ctx.globalAlpha = opacity;
-
-        // 에너지 파동
         drawEnergyWave(40, 180 + baseY);
-        drawEnergyWave(canvas.width - 60, 300 + baseY);
+        drawSpacetimeRift(canvas.width - 50, 250 + baseY);
     }
 
-    // 8. 빅뱅 잔광 ~ 다중우주: 시공간 왜곡
-    if (progress > 0.85) {
-        const opacity = smoothStep(0.85, 0.92, progress);
+    // 7. 옴니버스/초월 (0.32 ~ 0.55): 빛나는 구체들
+    if (p > 0.30 && p < 0.58) {
+        const opacity = smoothStep(0.30, 0.35, p) * (1 - smoothStep(0.54, 0.58, p));
         ctx.globalAlpha = opacity;
+        drawGlowingOrb(50, 150 + baseY, 25, '#8B5CF6');
+        drawGlowingOrb(canvas.width - 60, 280 + baseY, 30, '#06B6D4');
+    }
 
-        // 시공간 균열
-        drawSpacetimeRift(30, 150 + baseY);
-        drawSpacetimeRift(canvas.width - 50, 280 + baseY);
-        drawSpacetimeRift(50, 400 + baseY);
+    // 8. 무한/존재 (0.38 ~ 0.62): 희미한 빛줄기
+    if (p > 0.36 && p < 0.65) {
+        const opacity = smoothStep(0.36, 0.42, p) * (1 - smoothStep(0.60, 0.65, p));
+        ctx.globalAlpha = opacity;
+        drawLightBeam(30, baseY);
+        drawLightBeam(canvas.width - 40, baseY);
+    }
+
+    // 9. 창조/의식 (0.48 ~ 0.72): 황금빛 입자
+    if (p > 0.46 && p < 0.75) {
+        const opacity = smoothStep(0.46, 0.52, p) * (1 - smoothStep(0.70, 0.75, p));
+        ctx.globalAlpha = opacity;
+        drawGoldenParticles(baseY);
+    }
+
+    // 10. 시간/차원 (0.55 ~ 0.78): 모래시계, 균열
+    if (p > 0.53 && p < 0.80) {
+        const opacity = smoothStep(0.53, 0.58, p) * (1 - smoothStep(0.76, 0.80, p));
+        ctx.globalAlpha = opacity;
+        drawFloatingHourglass(60, 200 + baseY);
+        drawFloatingHourglass(canvas.width - 80, 350 + baseY);
+    }
+
+    // 11. 혼돈/결정 (0.65 ~ 0.85): 기하학적 패턴
+    if (p > 0.63 && p < 0.88) {
+        const opacity = smoothStep(0.63, 0.68, p) * (1 - smoothStep(0.84, 0.88, p));
+        ctx.globalAlpha = opacity;
+        drawGeometricPattern(40, 150 + baseY);
+        drawGeometricPattern(canvas.width - 60, 300 + baseY);
+    }
+
+    // 12. 에테르/항성 (0.72 ~ 0.92): 가스 구름
+    if (p > 0.70 && p < 0.94) {
+        const opacity = smoothStep(0.70, 0.75, p) * (1 - smoothStep(0.90, 0.94, p));
+        ctx.globalAlpha = opacity;
+        drawGasCloud(50, 180 + baseY, '#FF9500');
+        drawGasCloud(canvas.width - 70, 320 + baseY, '#00D4FF');
+    }
+
+    // 13. 동결/암흑 (0.82 ~ 0.98): 얼음 결정
+    if (p > 0.80 && p < 1.0) {
+        const opacity = smoothStep(0.80, 0.85, p) * (1 - smoothStep(0.96, 1.0, p));
+        ctx.globalAlpha = opacity;
+        drawIceCrystal(45, 200 + baseY);
+        drawIceCrystal(canvas.width - 55, 280 + baseY);
+    }
+
+    // 14. 스펙트럼 너머 (0.40 ~ 0.44): 양자 입자
+    if (p > 0.40 && p < 0.46) {
+        const opacity = smoothStep(0.40, 0.42, p) * (1 - smoothStep(0.44, 0.46, p));
+        ctx.globalAlpha = opacity;
+        drawQuantumParticles(50, 150 + baseY, 'rgba(150, 100, 255, 0.7)');
+        drawQuantumParticles(canvas.width - 50, 300 + baseY, 'rgba(100, 200, 255, 0.7)');
+    }
+
+    // 15. 양자 영역 ~ 현실 경계 (0.44 ~ 0.50): 차원 포탈
+    if (p > 0.44 && p < 0.52) {
+        const opacity = smoothStep(0.44, 0.46, p) * (1 - smoothStep(0.50, 0.52, p));
+        ctx.globalAlpha = opacity;
+        drawDimensionPortal(40, 200 + baseY, 30);
+        drawDimensionPortal(canvas.width - 40, 350 + baseY, 25);
+    }
+
+    // 16. 가능성의 바다 ~ 영혼의 통로 (0.48 ~ 0.56): 별의 잔해
+    if (p > 0.48 && p < 0.58) {
+        const opacity = smoothStep(0.48, 0.50, p) * (1 - smoothStep(0.56, 0.58, p));
+        ctx.globalAlpha = opacity;
+        drawStellarDebris(60, 180 + baseY);
+        drawStellarDebris(canvas.width - 60, 280 + baseY);
+    }
+
+    // 17. 신성의 문 ~ 우주적 각성 (0.54 ~ 0.62): 신성 광선
+    if (p > 0.54 && p < 0.64) {
+        const opacity = smoothStep(0.54, 0.56, p) * (1 - smoothStep(0.62, 0.64, p));
+        ctx.globalAlpha = opacity;
+        drawDivineRay(25, baseY);
+        drawDivineRay(canvas.width - 25, baseY);
+    }
+
+    // 18. 초월적 인식 ~ 완전한 조화 (0.60 ~ 0.68): 우주 먼지
+    if (p > 0.60 && p < 0.70) {
+        const opacity = smoothStep(0.60, 0.62, p) * (1 - smoothStep(0.68, 0.70, p));
+        ctx.globalAlpha = opacity;
+        drawCosmicDust(baseY);
+    }
+
+    // 19. 무한의 춤 ~ 영원의 불꽃 (0.66 ~ 0.74): 에너지 고리
+    if (p > 0.66 && p < 0.76) {
+        const opacity = smoothStep(0.66, 0.68, p) * (1 - smoothStep(0.74, 0.76, p));
+        ctx.globalAlpha = opacity;
+        drawEnergyRing(55, 200 + baseY, 'rgba(255, 150, 50, 0.6)');
+        drawEnergyRing(canvas.width - 55, 320 + baseY, 'rgba(50, 200, 255, 0.6)');
+    }
+
+    // 20. 심연의 노래 ~ 우주의 숨결 (0.72 ~ 0.80): 시공간 왜곡
+    if (p > 0.72 && p < 0.82) {
+        const opacity = smoothStep(0.72, 0.74, p) * (1 - smoothStep(0.80, 0.82, p));
+        ctx.globalAlpha = opacity;
+        drawSpacetimeWarp(45, 180 + baseY);
+        drawSpacetimeWarp(canvas.width - 45, 350 + baseY);
+    }
+
+    // 21. 빛의 바다 ~ 어둠의 왕좌 (0.78 ~ 0.86): 초월의 눈
+    if (p > 0.78 && p < 0.88) {
+        const opacity = smoothStep(0.78, 0.80, p) * (1 - smoothStep(0.86, 0.88, p));
+        ctx.globalAlpha = opacity;
+        drawEyeOfTranscendence(50, 220 + baseY);
+        drawEyeOfTranscendence(canvas.width - 50, 380 + baseY);
+    }
+
+    // 22. 최초의 기억 ~ 마지막 속삭임 (0.84 ~ 0.92): 빛나는 룬
+    if (p > 0.84 && p < 0.94) {
+        const opacity = smoothStep(0.84, 0.86, p) * (1 - smoothStep(0.92, 0.94, p));
+        ctx.globalAlpha = opacity;
+        drawGlowingRune(40, 200 + baseY, 'rgba(200, 180, 100, 0.7)');
+        drawGlowingRune(canvas.width - 40, 340 + baseY, 'rgba(100, 180, 200, 0.7)');
+    }
+
+    // 23. 세계의 심장 ~ 운명의 실 (0.90 ~ 0.96): 원시 불꽃
+    if (p > 0.90 && p < 0.98) {
+        const opacity = smoothStep(0.90, 0.92, p) * (1 - smoothStep(0.96, 0.98, p));
+        ctx.globalAlpha = opacity;
+        drawPrimordialFlame(30, canvas.height - 100 + baseY);
+        drawPrimordialFlame(canvas.width - 30, canvas.height - 100 + baseY);
+    }
+
+    // 24. 절대자의 꿈 ~ 절대자의 왕좌 (0.96 ~ 1.0): 최종 조합
+    if (p > 0.96) {
+        const opacity = smoothStep(0.96, 0.98, p);
+        ctx.globalAlpha = opacity * 0.6;
+        drawChainsOfEternity(20, baseY);
+        drawChainsOfEternity(canvas.width - 20, baseY);
+        drawInfinitySpiral(canvas.width / 2 - 80, 150 + baseY);
+        drawInfinitySpiral(canvas.width / 2 + 80, 150 + baseY);
+        drawCrownOfKings(canvas.width / 2, 80 + baseY);
     }
 
     ctx.restore();
+}
+
+// 추가 사이드 오브젝트 함수들
+function drawGlowingOrb(x, y, r, color) {
+    const gradient = ctx.createRadialGradient(x, y, 0, x, y, r);
+    gradient.addColorStop(0, color + 'AA');
+    gradient.addColorStop(0.5, color + '44');
+    gradient.addColorStop(1, 'transparent');
+    ctx.fillStyle = gradient;
+    ctx.beginPath();
+    ctx.arc(x, y, r, 0, Math.PI * 2);
+    ctx.fill();
+}
+
+function drawLightBeam(x, baseY) {
+    const gradient = ctx.createLinearGradient(x, baseY, x, baseY + canvas.height);
+    gradient.addColorStop(0, 'rgba(255, 255, 255, 0.3)');
+    gradient.addColorStop(0.5, 'rgba(255, 255, 255, 0.1)');
+    gradient.addColorStop(1, 'transparent');
+    ctx.fillStyle = gradient;
+    ctx.fillRect(x - 3, baseY, 6, canvas.height);
+}
+
+function drawGoldenParticles(baseY) {
+    const time = Date.now() / 1000;
+    for (let i = 0; i < 10; i++) {
+        const x = 20 + (i % 2) * (canvas.width - 60) + Math.sin(time + i) * 10;
+        const y = 100 + i * 50 + baseY;
+        ctx.beginPath();
+        ctx.arc(x, y, 3, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(255, 215, 100, 0.7)';
+        ctx.fill();
+    }
+}
+
+function drawFloatingHourglass(x, y) {
+    ctx.strokeStyle = 'rgba(180, 150, 100, 0.6)';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(x - 12, y - 20);
+    ctx.lineTo(x + 12, y - 20);
+    ctx.lineTo(x, y);
+    ctx.lineTo(x + 12, y + 20);
+    ctx.lineTo(x - 12, y + 20);
+    ctx.lineTo(x, y);
+    ctx.closePath();
+    ctx.stroke();
+}
+
+function drawGeometricPattern(x, y) {
+    ctx.strokeStyle = 'rgba(150, 200, 220, 0.5)';
+    ctx.lineWidth = 1;
+    for (let i = 0; i < 3; i++) {
+        ctx.beginPath();
+        ctx.arc(x, y, 15 + i * 10, 0, Math.PI * 2);
+        ctx.stroke();
+    }
+}
+
+function drawGasCloud(x, y, color) {
+    const gradient = ctx.createRadialGradient(x, y, 0, x, y, 40);
+    gradient.addColorStop(0, color + '40');
+    gradient.addColorStop(1, 'transparent');
+    ctx.fillStyle = gradient;
+    ctx.fillRect(x - 40, y - 40, 80, 80);
+}
+
+function drawIceCrystal(x, y) {
+    ctx.strokeStyle = 'rgba(200, 230, 255, 0.6)';
+    ctx.lineWidth = 1;
+    for (let i = 0; i < 6; i++) {
+        const angle = (i / 6) * Math.PI * 2;
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+        ctx.lineTo(x + Math.cos(angle) * 20, y + Math.sin(angle) * 20);
+        ctx.stroke();
+    }
+}
+
+function drawFinalAscension(baseY) {
+    const time = Date.now() / 2000;
+    // 양쪽에서 중앙으로 수렴하는 빛
+    for (let i = 0; i < 5; i++) {
+        const y = 100 + i * 80 + baseY;
+        const offset = Math.sin(time + i) * 20;
+
+        ctx.beginPath();
+        ctx.moveTo(0, y + offset);
+        ctx.lineTo(canvas.width / 2, y);
+        ctx.strokeStyle = `rgba(255, 255, 255, ${0.2 - i * 0.03})`;
+        ctx.lineWidth = 1;
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.moveTo(canvas.width, y - offset);
+        ctx.lineTo(canvas.width / 2, y);
+        ctx.stroke();
+    }
+}
+
+// ==================== 확장 사이드 오브젝트 함수들 (스테이지 42-101) ====================
+
+// 양자 입자 (Quantum Particles)
+function drawQuantumParticles(x, y, color) {
+    const time = Date.now() / 500;
+    for (let i = 0; i < 8; i++) {
+        const angle = (i / 8) * Math.PI * 2 + time;
+        const radius = 20 + Math.sin(time * 2 + i) * 10;
+        const px = x + Math.cos(angle) * radius;
+        const py = y + Math.sin(angle) * radius;
+        ctx.beginPath();
+        ctx.arc(px, py, 3, 0, Math.PI * 2);
+        ctx.fillStyle = color;
+        ctx.fill();
+    }
+}
+
+// 차원 포탈 (Dimension Portal)
+function drawDimensionPortal(x, y, size) {
+    const time = Date.now() / 1000;
+    for (let i = 0; i < 4; i++) {
+        ctx.beginPath();
+        ctx.arc(x, y, size - i * 5, 0, Math.PI * 2);
+        ctx.strokeStyle = `hsla(${(time * 50 + i * 30) % 360}, 80%, 60%, ${0.6 - i * 0.1})`;
+        ctx.lineWidth = 2;
+        ctx.stroke();
+    }
+}
+
+// 별의 잔해 (Stellar Debris)
+function drawStellarDebris(x, y) {
+    const time = Date.now() / 800;
+    for (let i = 0; i < 6; i++) {
+        const angle = time + i * 1.05;
+        const dist = 15 + i * 5;
+        const dx = x + Math.cos(angle) * dist;
+        const dy = y + Math.sin(angle) * dist;
+        ctx.fillStyle = `rgba(255, ${200 + i * 10}, ${100 + i * 20}, 0.7)`;
+        ctx.beginPath();
+        ctx.arc(dx, dy, 2 + i * 0.5, 0, Math.PI * 2);
+        ctx.fill();
+    }
+}
+
+// 신성 광선 (Divine Ray)
+function drawDivineRay(x, baseY) {
+    const gradient = ctx.createLinearGradient(x, baseY, x, baseY + canvas.height);
+    gradient.addColorStop(0, 'rgba(255, 223, 186, 0.5)');
+    gradient.addColorStop(0.3, 'rgba(255, 200, 150, 0.3)');
+    gradient.addColorStop(1, 'transparent');
+    ctx.fillStyle = gradient;
+    ctx.beginPath();
+    ctx.moveTo(x - 15, baseY);
+    ctx.lineTo(x + 15, baseY);
+    ctx.lineTo(x + 5, baseY + canvas.height);
+    ctx.lineTo(x - 5, baseY + canvas.height);
+    ctx.fill();
+}
+
+// 우주 먼지 (Cosmic Dust)
+function drawCosmicDust(baseY) {
+    const time = Date.now() / 1200;
+    for (let i = 0; i < 15; i++) {
+        const side = i % 2 === 0;
+        const x = side ? 10 + (i * 7) : canvas.width - 10 - (i * 7);
+        const y = 80 + i * 40 + Math.sin(time + i) * 15 + baseY;
+        ctx.fillStyle = `rgba(180, 180, 220, ${0.4 + Math.sin(time + i) * 0.2})`;
+        ctx.beginPath();
+        ctx.arc(x, y, 2, 0, Math.PI * 2);
+        ctx.fill();
+    }
+}
+
+// 에너지 고리 (Energy Ring)
+function drawEnergyRing(x, y, color) {
+    const time = Date.now() / 600;
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.rotate(time);
+    ctx.strokeStyle = color;
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.ellipse(0, 0, 25, 10, 0, 0, Math.PI * 2);
+    ctx.stroke();
+    ctx.restore();
+}
+
+// 시공간 왜곡 (Spacetime Warp)
+function drawSpacetimeWarp(x, y) {
+    const time = Date.now() / 700;
+    for (let i = 0; i < 5; i++) {
+        const warp = Math.sin(time + i * 0.5) * 5;
+        ctx.strokeStyle = `rgba(100, 200, 255, ${0.5 - i * 0.08})`;
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(x - 20 + warp, y - 30 + i * 15);
+        ctx.quadraticCurveTo(x + warp, y - 20 + i * 15, x + 20 - warp, y - 30 + i * 15);
+        ctx.stroke();
+    }
+}
+
+// 초월의 눈 (Eye of Transcendence)
+function drawEyeOfTranscendence(x, y) {
+    const time = Date.now() / 1000;
+    // 외곽
+    ctx.beginPath();
+    ctx.ellipse(x, y, 20, 12, 0, 0, Math.PI * 2);
+    ctx.strokeStyle = 'rgba(200, 150, 255, 0.6)';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+    // 동공
+    ctx.beginPath();
+    ctx.arc(x + Math.sin(time) * 5, y, 6, 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(100, 50, 200, 0.8)';
+    ctx.fill();
+}
+
+// 빛나는 룬 (Glowing Rune)
+function drawGlowingRune(x, y, color) {
+    const time = Date.now() / 800;
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.rotate(time * 0.5);
+    ctx.strokeStyle = color;
+    ctx.lineWidth = 2;
+    // 삼각형 룬
+    ctx.beginPath();
+    ctx.moveTo(0, -15);
+    ctx.lineTo(13, 10);
+    ctx.lineTo(-13, 10);
+    ctx.closePath();
+    ctx.stroke();
+    // 내부 원
+    ctx.beginPath();
+    ctx.arc(0, 0, 6, 0, Math.PI * 2);
+    ctx.stroke();
+    ctx.restore();
+}
+
+// 원시 불꽃 (Primordial Flame)
+function drawPrimordialFlame(x, y) {
+    const time = Date.now() / 200;
+    for (let i = 0; i < 5; i++) {
+        const flicker = Math.sin(time + i * 2) * 3;
+        const h = 20 + i * 5 + flicker;
+        const gradient = ctx.createLinearGradient(x, y, x, y - h);
+        gradient.addColorStop(0, 'rgba(255, 100, 50, 0.8)');
+        gradient.addColorStop(0.5, 'rgba(255, 200, 50, 0.5)');
+        gradient.addColorStop(1, 'transparent');
+        ctx.fillStyle = gradient;
+        ctx.beginPath();
+        ctx.moveTo(x - 8 + i * 2, y);
+        ctx.quadraticCurveTo(x + flicker, y - h * 0.7, x, y - h);
+        ctx.quadraticCurveTo(x - flicker, y - h * 0.7, x + 8 - i * 2, y);
+        ctx.fill();
+    }
+}
+
+// 영원의 사슬 (Chains of Eternity)
+function drawChainsOfEternity(x, baseY) {
+    const time = Date.now() / 500;
+    ctx.strokeStyle = 'rgba(180, 160, 140, 0.5)';
+    ctx.lineWidth = 2;
+    for (let i = 0; i < 6; i++) {
+        const y = 80 + i * 60 + baseY;
+        const wobble = Math.sin(time + i) * 5;
+        ctx.beginPath();
+        ctx.ellipse(x + wobble, y, 8, 5, 0, 0, Math.PI * 2);
+        ctx.stroke();
+    }
+}
+
+// 무한 나선 (Infinity Spiral)
+function drawInfinitySpiral(x, y) {
+    const time = Date.now() / 600;
+    ctx.strokeStyle = 'rgba(150, 220, 255, 0.6)';
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    for (let t = 0; t < Math.PI * 4; t += 0.1) {
+        const r = 5 + t * 2;
+        const px = x + Math.cos(t + time) * r;
+        const py = y + Math.sin(t + time) * r * 0.5;
+        if (t === 0) ctx.moveTo(px, py);
+        else ctx.lineTo(px, py);
+    }
+    ctx.stroke();
+}
+
+// 절대 영점 (Absolute Zero)
+function drawAbsoluteZero(x, y) {
+    const gradient = ctx.createRadialGradient(x, y, 0, x, y, 30);
+    gradient.addColorStop(0, 'rgba(200, 230, 255, 0.8)');
+    gradient.addColorStop(0.5, 'rgba(150, 200, 255, 0.4)');
+    gradient.addColorStop(1, 'transparent');
+    ctx.fillStyle = gradient;
+    ctx.beginPath();
+    ctx.arc(x, y, 30, 0, Math.PI * 2);
+    ctx.fill();
+    // 결정
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.6)';
+    ctx.lineWidth = 1;
+    for (let i = 0; i < 6; i++) {
+        const angle = (i / 6) * Math.PI * 2;
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+        ctx.lineTo(x + Math.cos(angle) * 20, y + Math.sin(angle) * 20);
+        ctx.stroke();
+    }
+}
+
+// 왕의 왕관 (Crown of Kings)
+function drawCrownOfKings(x, y) {
+    ctx.fillStyle = 'rgba(255, 215, 0, 0.7)';
+    ctx.beginPath();
+    ctx.moveTo(x - 20, y);
+    ctx.lineTo(x - 15, y - 15);
+    ctx.lineTo(x - 8, y - 5);
+    ctx.lineTo(x, y - 20);
+    ctx.lineTo(x + 8, y - 5);
+    ctx.lineTo(x + 15, y - 15);
+    ctx.lineTo(x + 20, y);
+    ctx.closePath();
+    ctx.fill();
+    // 보석
+    ctx.fillStyle = 'rgba(255, 50, 50, 0.8)';
+    ctx.beginPath();
+    ctx.arc(x, y - 12, 4, 0, Math.PI * 2);
+    ctx.fill();
+}
+
+// 심연의 촉수 (Abyss Tentacle)
+function drawAbyssTentacle(x, baseY) {
+    const time = Date.now() / 400;
+    ctx.strokeStyle = 'rgba(80, 40, 120, 0.6)';
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.moveTo(x, baseY + canvas.height);
+    for (let i = 0; i < 8; i++) {
+        const y = baseY + canvas.height - i * 50;
+        const wobble = Math.sin(time + i * 0.5) * (15 + i * 2);
+        ctx.quadraticCurveTo(x + wobble, y + 25, x + wobble * 0.5, y);
+    }
+    ctx.stroke();
+}
+
+// 빛의 파편 (Light Shard)
+function drawLightShard(x, y, angle) {
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.rotate(angle);
+    const gradient = ctx.createLinearGradient(0, -20, 0, 20);
+    gradient.addColorStop(0, 'rgba(255, 255, 255, 0.9)');
+    gradient.addColorStop(1, 'rgba(255, 255, 200, 0.3)');
+    ctx.fillStyle = gradient;
+    ctx.beginPath();
+    ctx.moveTo(0, -20);
+    ctx.lineTo(5, 0);
+    ctx.lineTo(0, 20);
+    ctx.lineTo(-5, 0);
+    ctx.closePath();
+    ctx.fill();
+    ctx.restore();
+}
+
+// 혼돈의 소용돌이 (Chaos Vortex)
+function drawChaosVortex(x, y) {
+    const time = Date.now() / 300;
+    for (let i = 0; i < 4; i++) {
+        ctx.beginPath();
+        ctx.arc(x, y, 10 + i * 8, time + i * 0.5, time + i * 0.5 + Math.PI);
+        ctx.strokeStyle = `hsla(${(time * 100 + i * 50) % 360}, 70%, 50%, ${0.6 - i * 0.1})`;
+        ctx.lineWidth = 2;
+        ctx.stroke();
+    }
+}
+
+// 성스러운 십자가 (Holy Cross)
+function drawHolyCross(x, y) {
+    const time = Date.now() / 1000;
+    const glow = 0.5 + Math.sin(time * 2) * 0.2;
+    ctx.fillStyle = `rgba(255, 223, 186, ${glow})`;
+    ctx.fillRect(x - 3, y - 20, 6, 40);
+    ctx.fillRect(x - 12, y - 8, 24, 6);
+}
+
+// 우주의 심장 (Heart of Universe)
+function drawHeartOfUniverse(x, y) {
+    const time = Date.now() / 500;
+    const beat = 1 + Math.sin(time * 3) * 0.1;
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.scale(beat, beat);
+    const gradient = ctx.createRadialGradient(0, 0, 0, 0, 0, 20);
+    gradient.addColorStop(0, 'rgba(255, 100, 150, 0.8)');
+    gradient.addColorStop(0.5, 'rgba(200, 50, 100, 0.5)');
+    gradient.addColorStop(1, 'transparent');
+    ctx.fillStyle = gradient;
+    ctx.beginPath();
+    ctx.moveTo(0, 5);
+    ctx.bezierCurveTo(-15, -10, -15, -20, 0, -10);
+    ctx.bezierCurveTo(15, -20, 15, -10, 0, 5);
+    ctx.fill();
+    ctx.restore();
+}
+
+// 시간의 모래 (Sands of Time)
+function drawSandsOfTime(x, baseY) {
+    const time = Date.now() / 100;
+    for (let i = 0; i < 20; i++) {
+        const y = (baseY + (time + i * 30) % canvas.height);
+        const wobble = Math.sin(time / 500 + i) * 3;
+        ctx.fillStyle = `rgba(255, 220, 180, ${0.3 + Math.random() * 0.3})`;
+        ctx.beginPath();
+        ctx.arc(x + wobble, y, 1.5, 0, Math.PI * 2);
+        ctx.fill();
+    }
 }
 
 // 개별 오브젝트 그리기 함수들
@@ -1222,21 +2768,119 @@ function drawBackground() {
 
     const p = backgroundProgress; // 0 ~ 1
 
-    // 하늘 색상 보간 - 더 다양한 색상 변화 (확장된 스테이지)
+    // 하늘 색상 보간 - 41개 스테이지에 맞춘 색상 변화
     const skyColors = [
-        { pos: 0.0, top: '#1a1a2e', mid: '#16213e', bot: '#0f3460' },   // 겨울 밤 (파란 톤)
-        { pos: 0.08, top: '#0f0f23', mid: '#1a1a3e', bot: '#2d132c' },  // 높은 하늘 (보라 톤)
-        { pos: 0.16, top: '#0d0d1a', mid: '#1f0f30', bot: '#3d1a4a' },  // 성층권 (자주색)
-        { pos: 0.24, top: '#050510', mid: '#0a0a20', bot: '#15102a' },  // 우주 진입 (어두운 남색)
-        { pos: 0.32, top: '#020208', mid: '#0a0520', bot: '#150a30' },  // 깊은 우주 (검은 보라)
-        { pos: 0.40, top: '#030010', mid: '#100028', bot: '#1a0040' },  // 은하계 (진한 보라)
-        { pos: 0.48, top: '#050008', mid: '#0f0018', bot: '#180028' },  // 은하 외곽 (어두운 자주)
-        { pos: 0.56, top: '#000005', mid: '#050010', bot: '#0a001a' },  // 태양계 밖 (거의 검정)
-        { pos: 0.64, top: '#02000a', mid: '#08001a', bot: '#100025' },  // 블랙홀 지대 (검은 남색)
-        { pos: 0.72, top: '#000008', mid: '#050015', bot: '#0a0020' },  // 퀘이사 영역 (어두운 파랑)
-        { pos: 0.80, top: '#030005', mid: '#080010', bot: '#0d0018' },  // 우주 거대구조 (암흑)
-        { pos: 0.88, top: '#020003', mid: '#050008', bot: '#080010' },  // 빅뱅 잔광 (미세한 빛)
-        { pos: 1.0, top: '#010002', mid: '#030005', bot: '#050008' }    // 다중우주 경계 (거의 무)
+        // 1-10: 지구 → 우주 진입
+        { pos: 0.00, top: '#1a1a2e', mid: '#16213e', bot: '#0f3460' },  // 1. 겨울 밤
+        { pos: 0.01, top: '#0f0f23', mid: '#1a1a3e', bot: '#2d132c' },  // 2. 높은 하늘
+        { pos: 0.02, top: '#0d0d1a', mid: '#1f0f30', bot: '#3d1a4a' },  // 3. 성층권
+        { pos: 0.03, top: '#050510', mid: '#0a0a20', bot: '#15102a' },  // 4. 우주 진입
+        { pos: 0.04, top: '#020208', mid: '#0a0520', bot: '#150a30' },  // 5. 깊은 우주
+        { pos: 0.05, top: '#030010', mid: '#100028', bot: '#1a0040' },  // 6. 은하계
+        { pos: 0.06, top: '#050008', mid: '#0f0018', bot: '#180028' },  // 7. 은하 외곽
+        { pos: 0.07, top: '#000005', mid: '#050010', bot: '#0a001a' },  // 8. 태양계 밖
+        { pos: 0.08, top: '#02000a', mid: '#08001a', bot: '#100025' },  // 9. 블랙홀 지대
+        { pos: 0.09, top: '#000008', mid: '#050015', bot: '#0a0020' },  // 10. 퀘이사 영역
+        // 11-20: 우주 심연
+        { pos: 0.10, top: '#030005', mid: '#080010', bot: '#0d0018' },  // 11. 우주 거대구조
+        { pos: 0.11, top: '#020003', mid: '#050008', bot: '#080010' },  // 12. 빅뱅 잔광
+        { pos: 0.12, top: '#010002', mid: '#030005', bot: '#050008' },  // 13. 다중우주 경계
+        { pos: 0.13, top: '#080015', mid: '#100030', bot: '#1a0050' },  // 14. 옴니버스
+        { pos: 0.14, top: '#100820', mid: '#201040', bot: '#301860' },  // 15. 초월 공간
+        { pos: 0.15, top: '#000000', mid: '#000000', bot: '#000005' },  // 16. 무한의 끝
+        { pos: 0.16, top: '#0a0a0a', mid: '#151515', bot: '#202020' },  // 17. 존재의 근원
+        { pos: 0.17, top: '#000000', mid: '#000000', bot: '#000000' },  // 18. 절대 무
+        { pos: 0.18, top: '#201510', mid: '#302015', bot: '#40301a' },  // 19. 창조의 빛
+        { pos: 0.19, top: '#0a1020', mid: '#152040', bot: '#203060' },  // 20. 의식의 바다
+        // 21-30: 시공간 초월
+        { pos: 0.20, top: '#15100a', mid: '#251a0f', bot: '#352515' },  // 21. 시간의 무덤
+        { pos: 0.21, top: '#100520', mid: '#200a40', bot: '#300f60' },  // 22. 차원의 틈
+        { pos: 0.22, top: '#150008', mid: '#2a0010', bot: '#400018' },  // 23. 혼돈의 소용돌이
+        { pos: 0.23, top: '#0a1015', mid: '#152025', bot: '#203035' },  // 24. 결정화된 시공
+        { pos: 0.24, top: '#101520', mid: '#182030', bot: '#202b40' },  // 25. 에테르 평원
+        { pos: 0.25, top: '#181008', mid: '#281810', bot: '#382018' },  // 26. 항성의 요람
+        { pos: 0.26, top: '#200808', mid: '#301010', bot: '#401818' },  // 27. 초신성 잔해
+        { pos: 0.27, top: '#081520', mid: '#102030', bot: '#182b40' },  // 28. 우주의 동결점
+        { pos: 0.28, top: '#05050a', mid: '#0a0a15', bot: '#0f0f20' },  // 29. 암흑 에너지 해
+        { pos: 0.29, top: '#0a0810', mid: '#151020', bot: '#201830' },  // 30. 중력파 폭풍
+        // 31-40: 극한 영역
+        { pos: 0.30, top: '#100a15', mid: '#201428', bot: '#301e3b' },  // 31. 반물질 구역
+        { pos: 0.31, top: '#181510', mid: '#282218', bot: '#382f20' },  // 32. 감마선 폭발
+        { pos: 0.32, top: '#080510', mid: '#100a20', bot: '#180f30' },  // 33. 초은하단
+        { pos: 0.33, top: '#101010', mid: '#181818', bot: '#202020' },  // 34. 화이트홀 출구
+        { pos: 0.34, top: '#0a1010', mid: '#152020', bot: '#203030' },  // 35. 펄서 벨트
+        { pos: 0.35, top: '#100808', mid: '#201010', bot: '#301818' },  // 36. 마그네타 영역
+        { pos: 0.36, top: '#080a10', mid: '#101520', bot: '#182030' },  // 37. 양자 거품
+        { pos: 0.37, top: '#0f0a15', mid: '#1e1428', bot: '#2d1e3b' },  // 38. 끈 이론 공간
+        { pos: 0.38, top: '#050505', mid: '#0a0a0a', bot: '#0f0f0f' },  // 39. 무한 차원
+        { pos: 0.39, top: '#151515', mid: '#252525', bot: '#353535' },  // 40. 순수 에너지
+        // 41-50: 스펙트럼 너머
+        { pos: 0.40, top: '#101018', mid: '#181828', bot: '#202038' },  // 41. 스펙트럼 너머
+        { pos: 0.41, top: '#0a0515', mid: '#140a25', bot: '#1e0f35' },  // 42. 양자 영역
+        { pos: 0.42, top: '#120810', mid: '#221018', bot: '#321820' },  // 43. 현실 경계
+        { pos: 0.43, top: '#080a18', mid: '#101428', bot: '#181e38' },  // 44. 가능성의 바다
+        { pos: 0.44, top: '#100810', mid: '#201018', bot: '#301820' },  // 45. 영혼의 통로
+        { pos: 0.45, top: '#181210', mid: '#281a18', bot: '#382220' },  // 46. 신성의 문
+        { pos: 0.46, top: '#0a0a12', mid: '#141420', bot: '#1e1e2e' },  // 47. 우주적 각성
+        { pos: 0.47, top: '#100a08', mid: '#201410', bot: '#301e18' },  // 48. 초월적 인식
+        { pos: 0.48, top: '#080a0a', mid: '#101414', bot: '#181e1e' },  // 49. 완전한 조화
+        { pos: 0.49, top: '#0f0810', mid: '#1e1020', bot: '#2d1830' },  // 50. 무한의 춤
+        // 51-60: 영원의 영역
+        { pos: 0.50, top: '#180a08', mid: '#281410', bot: '#381e18' },  // 51. 영원의 불꽃
+        { pos: 0.51, top: '#050812', mid: '#0a1022', bot: '#0f1832' },  // 52. 심연의 노래
+        { pos: 0.52, top: '#0a0810', mid: '#141020', bot: '#1e1830' },  // 53. 우주의 숨결
+        { pos: 0.53, top: '#120808', mid: '#221010', bot: '#321818' },  // 54. 빛의 바다
+        { pos: 0.54, top: '#08080f', mid: '#10101e', bot: '#18182d' },  // 55. 어둠의 왕좌
+        { pos: 0.55, top: '#100a10', mid: '#201420', bot: '#301e30' },  // 56. 최초의 기억
+        { pos: 0.56, top: '#0a0a08', mid: '#141410', bot: '#1e1e18' },  // 57. 마지막 속삭임
+        { pos: 0.57, top: '#0f0a12', mid: '#1e1422', bot: '#2d1e32' },  // 58. 세계의 심장
+        { pos: 0.58, top: '#080a10', mid: '#101420', bot: '#181e30' },  // 59. 운명의 실
+        { pos: 0.59, top: '#100808', mid: '#201010', bot: '#301818' },  // 60. 절대자의 꿈
+        // 61-70: 신성 영역
+        { pos: 0.60, top: '#0a0810', mid: '#141020', bot: '#1e1830' },  // 61. 천상의 정원
+        { pos: 0.61, top: '#18100a', mid: '#281814', bot: '#38201e' },  // 62. 신들의 안식처
+        { pos: 0.62, top: '#08080a', mid: '#101014', bot: '#18181e' },  // 63. 영원한 황혼
+        { pos: 0.63, top: '#0f0810', mid: '#1e1020', bot: '#2d1830' },  // 64. 창세의 불꽃
+        { pos: 0.64, top: '#0a0a10', mid: '#141420', bot: '#1e1e30' },  // 65. 종말의 서곡
+        { pos: 0.65, top: '#100a08', mid: '#201410', bot: '#301e18' },  // 66. 우주의 심판
+        { pos: 0.66, top: '#080810', mid: '#101020', bot: '#181830' },  // 67. 존재의 노래
+        { pos: 0.67, top: '#120a0a', mid: '#221414', bot: '#321e1e' },  // 68. 무의 춤
+        { pos: 0.68, top: '#0a080f', mid: '#14101e', bot: '#1e182d' },  // 69. 영원의 포옹
+        { pos: 0.69, top: '#0f0a08', mid: '#1e1410', bot: '#2d1e18' },  // 70. 신성한 침묵
+        // 71-80: 궁극의 경지
+        { pos: 0.70, top: '#080a12', mid: '#101422', bot: '#181e32' },  // 71. 빛과 어둠의 경계
+        { pos: 0.71, top: '#100808', mid: '#201010', bot: '#301818' },  // 72. 시간의 끝
+        { pos: 0.72, top: '#0a0810', mid: '#141020', bot: '#1e1830' },  // 73. 공간의 시작
+        { pos: 0.73, top: '#08100a', mid: '#102014', bot: '#18301e' },  // 74. 무한 루프
+        { pos: 0.74, top: '#0f080a', mid: '#1e1014', bot: '#2d181e' },  // 75. 완전한 무
+        { pos: 0.75, top: '#0a0a0a', mid: '#141414', bot: '#1e1e1e' },  // 76. 순수한 존재
+        { pos: 0.76, top: '#100a10', mid: '#201420', bot: '#301e30' },  // 77. 우주의 꿈
+        { pos: 0.77, top: '#080a08', mid: '#101410', bot: '#181e18' },  // 78. 현실의 끝
+        { pos: 0.78, top: '#0a080a', mid: '#141014', bot: '#1e181e' },  // 79. 환상의 시작
+        { pos: 0.79, top: '#0f0a0f', mid: '#1e141e', bot: '#2d1e2d' },  // 80. 모든 것의 하나
+        // 81-90: 최고 영역
+        { pos: 0.80, top: '#080808', mid: '#101010', bot: '#181818' },  // 81. 절대적 평화
+        { pos: 0.81, top: '#0a0a10', mid: '#141420', bot: '#1e1e30' },  // 82. 영원의 문
+        { pos: 0.82, top: '#100808', mid: '#201010', bot: '#301818' },  // 83. 무한의 열쇠
+        { pos: 0.83, top: '#08100a', mid: '#102014', bot: '#18301e' },  // 84. 진리의 빛
+        { pos: 0.84, top: '#0a080f', mid: '#14101e', bot: '#1e182d' },  // 85. 우주의 비밀
+        { pos: 0.85, top: '#0f0808', mid: '#1e1010', bot: '#2d1818' },  // 86. 최후의 여정
+        { pos: 0.86, top: '#080a0a', mid: '#101414', bot: '#181e1e' },  // 87. 영원한 귀환
+        { pos: 0.87, top: '#0a0810', mid: '#141020', bot: '#1e1830' },  // 88. 궁극의 진화
+        { pos: 0.88, top: '#100a08', mid: '#201410', bot: '#301e18' },  // 89. 완전한 깨달음
+        { pos: 0.89, top: '#08080f', mid: '#10101e', bot: '#18182d' },  // 90. 모든 것의 끝
+        // 91-101: 절대자의 영역
+        { pos: 0.90, top: '#0f0a0a', mid: '#1e1414', bot: '#2d1e1e' },  // 91. 새로운 시작
+        { pos: 0.91, top: '#0a0a08', mid: '#141410', bot: '#1e1e18' },  // 92. 원초의 힘
+        { pos: 0.92, top: '#080a10', mid: '#101420', bot: '#181e30' },  // 93. 신의 눈물
+        { pos: 0.93, top: '#0a0808', mid: '#141010', bot: '#1e1818' },  // 94. 우주의 심장
+        { pos: 0.94, top: '#0f0a10', mid: '#1e1420', bot: '#2d1e30' },  // 95. 영원의 맹세
+        { pos: 0.95, top: '#08080a', mid: '#101014', bot: '#18181e' },  // 96. 절대자의 눈
+        { pos: 0.96, top: '#0a100a', mid: '#142014', bot: '#1e301e' },  // 97. 시간의 군주
+        { pos: 0.97, top: '#100a0a', mid: '#201414', bot: '#301e1e' },  // 98. 공간의 지배자
+        { pos: 0.98, top: '#0a0810', mid: '#141020', bot: '#1e1830' },  // 99. 존재의 왕
+        { pos: 0.99, top: '#0f0f0f', mid: '#1e1e1e', bot: '#2d2d2d' },  // 100. 절대자의 꿈
+        { pos: 1.00, top: '#151520', mid: '#252535', bot: '#35354a' },  // 101. 절대자의 왕좌
     ];
 
     // 현재 위치에 맞는 색상 보간
@@ -1264,24 +2908,73 @@ function drawBackground() {
     ctx.fillStyle = skyGradient;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    // 각 요소들 (진행도에 따라 opacity 조절) - 13개 스테이지
+    // 각 요소들 (진행도에 따라 opacity 조절) - 101개 스테이지
 
-    // 초반 요소들
-    drawStars(smoothStep(0.08, 0.2, p));                                      // 별: 일찍 등장
-    drawMoon(1 - smoothStep(0.12, 0.28, p), 1 - p * 0.8);                     // 달: 점점 작아지며 사라짐
+    // 초반 요소들 (1-10 스테이지: 0 ~ 0.10)
+    drawStars(smoothStep(0.01, 0.05, p));                                       // 별: 일찍 등장
+    drawMoon(1 - smoothStep(0.02, 0.06, p), 1 - p * 10);                        // 달: 점점 작아지며 사라짐
 
-    // 중반 요소들
-    drawGalaxy(smoothStep(0.28, 0.4, p) * (1 - smoothStep(0.55, 0.65, p)));   // 은하: 우주 진입~은하 외곽
-    drawNebula(smoothStep(0.35, 0.5, p) * (1 - smoothStep(0.6, 0.72, p)));    // 성운: 깊은 우주~태양계 밖
-    drawDistantGalaxies(smoothStep(0.42, 0.55, p) * (1 - smoothStep(0.68, 0.8, p))); // 먼 은하들
-    drawCosmicDust(smoothStep(0.48, 0.6, p) * (1 - smoothStep(0.75, 0.88, p))); // 우주 먼지
+    // 우주 요소들 (6-13 스테이지: 0.05 ~ 0.13)
+    drawGalaxy(smoothStep(0.05, 0.07, p) * (1 - smoothStep(0.10, 0.14, p)));    // 은하
+    drawNebula(smoothStep(0.06, 0.08, p) * (1 - smoothStep(0.11, 0.15, p)));    // 성운
+    drawDistantGalaxies(smoothStep(0.07, 0.09, p) * (1 - smoothStep(0.12, 0.16, p))); // 먼 은하들
+    drawCosmicDustBg(smoothStep(0.08, 0.10, p) * (1 - smoothStep(0.14, 0.18, p))); // 우주 먼지
+    drawBlackHole(smoothStep(0.09, 0.11, p) * (1 - smoothStep(0.15, 0.19, p)));  // 블랙홀
+    drawQuasar(smoothStep(0.10, 0.12, p) * (1 - smoothStep(0.16, 0.20, p)));     // 퀘이사
+    drawCosmicWeb(smoothStep(0.11, 0.13, p) * (1 - smoothStep(0.17, 0.21, p)));  // 우주 거대구조
+    drawCMB(smoothStep(0.12, 0.14, p) * (1 - smoothStep(0.18, 0.22, p)));        // 빅뱅 잔광
+    drawMultiverse(smoothStep(0.13, 0.15, p) * (1 - smoothStep(0.19, 0.23, p))); // 다중우주
 
-    // 후반 요소들 (새로운 스테이지)
-    drawBlackHole(smoothStep(0.56, 0.68, p) * (1 - smoothStep(0.78, 0.88, p)));  // 블랙홀
-    drawQuasar(smoothStep(0.64, 0.76, p) * (1 - smoothStep(0.85, 0.95, p)));     // 퀘이사
-    drawCosmicWeb(smoothStep(0.72, 0.84, p) * (1 - smoothStep(0.92, 1.0, p)));   // 우주 거대구조
-    drawCMB(smoothStep(0.8, 0.92, p));                                           // 빅뱅 잔광 (계속 유지)
-    drawMultiverse(smoothStep(0.88, 1.0, p));                                    // 다중우주 (마지막)
+    // 확장 스테이지 요소들 (14-40 스테이지: 0.13 ~ 0.40)
+    drawOmniverse(smoothStep(0.14, 0.16, p) * (1 - smoothStep(0.20, 0.24, p)));       // 옴니버스
+    drawTranscendence(smoothStep(0.15, 0.17, p) * (1 - smoothStep(0.21, 0.25, p)));   // 초월 공간
+    drawInfinityEdge(smoothStep(0.16, 0.18, p) * (1 - smoothStep(0.22, 0.26, p)));    // 무한의 끝
+    drawOrigin(smoothStep(0.17, 0.19, p) * (1 - smoothStep(0.23, 0.27, p)));          // 존재의 근원
+    drawAbsoluteVoid(smoothStep(0.18, 0.20, p) * (1 - smoothStep(0.24, 0.28, p)));    // 절대 무
+    drawCreationLight(smoothStep(0.19, 0.21, p) * (1 - smoothStep(0.25, 0.29, p)));   // 창조의 빛
+    drawConsciousnessSea(smoothStep(0.20, 0.22, p) * (1 - smoothStep(0.26, 0.30, p)));// 의식의 바다
+    drawTimeTomb(smoothStep(0.22, 0.24, p) * (1 - smoothStep(0.28, 0.32, p)));        // 시간의 무덤
+    drawDimensionRift(smoothStep(0.24, 0.26, p) * (1 - smoothStep(0.30, 0.34, p)));   // 차원의 틈
+    drawChaosVortexBg(smoothStep(0.26, 0.28, p) * (1 - smoothStep(0.32, 0.36, p)));   // 혼돈의 소용돌이
+    drawCrystalizedSpacetime(smoothStep(0.28, 0.30, p) * (1 - smoothStep(0.34, 0.38, p))); // 결정화된 시공
+    drawEtherPlain(smoothStep(0.30, 0.32, p) * (1 - smoothStep(0.36, 0.40, p)));      // 에테르 평원
+    drawStellarNursery(smoothStep(0.32, 0.34, p) * (1 - smoothStep(0.38, 0.42, p)));  // 항성의 요람
+    drawSupernovaRemnant(smoothStep(0.34, 0.36, p) * (1 - smoothStep(0.40, 0.44, p))); // 초신성 잔해
+    drawCosmicFreeze(smoothStep(0.36, 0.38, p) * (1 - smoothStep(0.42, 0.46, p)));    // 우주의 동결점
+    drawDarkEnergySea(smoothStep(0.38, 0.40, p) * (1 - smoothStep(0.44, 0.48, p)));   // 암흑 에너지 해
+    drawGravityWaveStorm(smoothStep(0.40, 0.42, p) * (1 - smoothStep(0.46, 0.50, p)));// 중력파 폭풍
+
+    // 스펙트럼 너머 요소들 (41-60 스테이지: 0.40 ~ 0.60)
+    drawQuantumRealm(smoothStep(0.42, 0.44, p) * (1 - smoothStep(0.48, 0.52, p)));    // 양자 영역
+    drawRealityBorder(smoothStep(0.44, 0.46, p) * (1 - smoothStep(0.50, 0.54, p)));   // 현실 경계
+    drawPossibilitySea(smoothStep(0.46, 0.48, p) * (1 - smoothStep(0.52, 0.56, p)));  // 가능성의 바다
+    drawSoulPassage(smoothStep(0.48, 0.50, p) * (1 - smoothStep(0.54, 0.58, p)));     // 영혼의 통로
+    drawDivineGate(smoothStep(0.50, 0.52, p) * (1 - smoothStep(0.56, 0.60, p)));      // 신성의 문
+    drawCosmicAwakening(smoothStep(0.52, 0.54, p) * (1 - smoothStep(0.58, 0.62, p))); // 우주적 각성
+    drawTranscendentMind(smoothStep(0.54, 0.56, p) * (1 - smoothStep(0.60, 0.64, p)));// 초월적 인식
+    drawPerfectHarmony(smoothStep(0.56, 0.58, p) * (1 - smoothStep(0.62, 0.66, p)));  // 완전한 조화
+    drawInfiniteDance(smoothStep(0.58, 0.60, p) * (1 - smoothStep(0.64, 0.68, p)));   // 무한의 춤
+
+    // 영원의 영역 요소들 (61-80 스테이지: 0.60 ~ 0.80)
+    drawEternalFlame(smoothStep(0.60, 0.62, p) * (1 - smoothStep(0.66, 0.70, p)));    // 영원의 불꽃
+    drawAbyssSong(smoothStep(0.62, 0.64, p) * (1 - smoothStep(0.68, 0.72, p)));       // 심연의 노래
+    drawCosmicBreath(smoothStep(0.64, 0.66, p) * (1 - smoothStep(0.70, 0.74, p)));    // 우주의 숨결
+    drawLightOcean(smoothStep(0.66, 0.68, p) * (1 - smoothStep(0.72, 0.76, p)));      // 빛의 바다
+    drawDarknessThrone(smoothStep(0.68, 0.70, p) * (1 - smoothStep(0.74, 0.78, p)));  // 어둠의 왕좌
+    drawFirstMemory(smoothStep(0.70, 0.72, p) * (1 - smoothStep(0.76, 0.80, p)));     // 최초의 기억
+    drawLastWhisper(smoothStep(0.72, 0.74, p) * (1 - smoothStep(0.78, 0.82, p)));     // 마지막 속삭임
+    drawWorldHeart(smoothStep(0.74, 0.76, p) * (1 - smoothStep(0.80, 0.84, p)));      // 세계의 심장
+    drawFateThread(smoothStep(0.76, 0.78, p) * (1 - smoothStep(0.82, 0.86, p)));      // 운명의 실
+    drawAbsoluteDream(smoothStep(0.78, 0.80, p) * (1 - smoothStep(0.84, 0.88, p)));   // 절대자의 꿈
+
+    // 최종 영역 요소들 (81-101 스테이지: 0.80 ~ 1.0)
+    drawCelestialGarden(smoothStep(0.80, 0.82, p) * (1 - smoothStep(0.86, 0.90, p))); // 천상의 정원
+    drawGodsRest(smoothStep(0.82, 0.84, p) * (1 - smoothStep(0.88, 0.92, p)));        // 신들의 안식처
+    drawEternalTwilight(smoothStep(0.84, 0.86, p) * (1 - smoothStep(0.90, 0.94, p))); // 영원한 황혼
+    drawGenesisFlame(smoothStep(0.86, 0.88, p) * (1 - smoothStep(0.92, 0.96, p)));    // 창세의 불꽃
+    drawApocalypsePrelude(smoothStep(0.88, 0.90, p) * (1 - smoothStep(0.94, 0.98, p)));// 종말의 서곡
+    drawUltimateRealm(smoothStep(0.92, 0.94, p));                                      // 궁극의 영역
+    drawAbsoluteThrone(smoothStep(0.96, 1.0, p));                                      // 절대자의 왕좌
 
     // 눈송이 (지상에서만)
     const snowOpacity = 1 - smoothStep(0.04, 0.12, p);
@@ -1297,35 +2990,124 @@ function drawBackground() {
     // 양옆 오브젝트 (땅과 함께 내려감)
     drawSideObjects(p, groundYOffset);
 
-    // 현재 위치 표시 - 13개 스테이지
+    // 현재 위치 표시 - 점수 기반 스테이지 (100개)
     const stageNames = [
-        '🌙 겨울 밤',        // 0.00 - 0.08
-        '⛅ 높은 하늘',      // 0.08 - 0.16
-        '🌌 성층권',         // 0.16 - 0.24
-        '🌠 우주 진입',      // 0.24 - 0.32
-        '🌑 깊은 우주',      // 0.32 - 0.40
-        '🌀 은하계',         // 0.40 - 0.48
-        '✨ 은하 외곽',      // 0.48 - 0.56
-        '🚀 태양계 밖',      // 0.56 - 0.64
-        '🕳️ 블랙홀 지대',   // 0.64 - 0.72
-        '💫 퀘이사 영역',    // 0.72 - 0.80
-        '🕸️ 우주 거대구조', // 0.80 - 0.88
-        '🔥 빅뱅 잔광',      // 0.88 - 0.96
-        '🌈 다중우주 경계'   // 0.96 - 1.00
+        // 1-50: 지구 → 우주
+        '🌙 겨울 밤',           // 0-4
+        '⛅ 높은 하늘',         // 5-9
+        '🌌 성층권',            // 10-14
+        '🌠 우주 진입',         // 15-19
+        '🌑 깊은 우주',         // 20-24
+        '🌀 은하계',            // 25-29
+        '✨ 은하 외곽',         // 30-34
+        '🚀 태양계 밖',         // 35-39
+        '🕳️ 블랙홀 지대',      // 40-44
+        '💫 퀘이사 영역',       // 45-49
+        // 51-100: 우주 끝 → 다중우주
+        '🕸️ 우주 거대구조',    // 50-54
+        '🔥 빅뱅 잔광',         // 55-59
+        '🌈 다중우주 경계',     // 60-64
+        '🔮 옴니버스',          // 65-69
+        '⚡ 초월 공간',         // 70-74
+        '♾️ 무한의 끝',         // 75-79
+        '💠 존재의 근원',       // 80-84
+        '🌑 절대 무',           // 85-89
+        '✴️ 창조의 빛',         // 90-94
+        '🎭 의식의 바다',       // 95-99
+        // 101-150: 추상적 개념
+        '⏳ 시간의 무덤',       // 100-104
+        '🔷 차원의 틈',         // 105-109
+        '🌀 혼돈의 소용돌이',   // 110-114
+        '💎 결정화된 시공',     // 115-119
+        '🎇 에테르 평원',       // 120-124
+        '🌟 항성의 요람',       // 125-129
+        '🔥 초신성 잔해',       // 130-134
+        '❄️ 우주의 동결점',     // 135-139
+        '⚫ 암흑 에너지 해',    // 140-144
+        '🌊 중력파 폭풍',       // 145-149
+        // 151-200: 물리학적 극한
+        '💫 반물질 구역',       // 150-154
+        '🔆 감마선 폭발',       // 155-159
+        '🌌 초은하단',          // 160-164
+        '🕳️ 화이트홀 출구',    // 165-169
+        '⭐ 펄서 벨트',         // 170-174
+        '🌑 마그네타 영역',     // 175-179
+        '💠 양자 거품',         // 180-184
+        '🔮 끈 이론 공간',      // 185-189
+        '♾️ 무한 차원',         // 190-194
+        '✨ 순수 에너지',       // 195-199
+        // 201-250: 스펙트럼 너머
+        '🌈 스펙트럼 너머',     // 200-204
+        '🎆 초월의 문',         // 205-209
+        '🌟 영원의 빛',         // 210-214
+        '🔱 신들의 영역',       // 215-219
+        '👁️ 전지의 눈',        // 220-224
+        '🌸 열반의 정원',       // 225-229
+        '⚜️ 황금 비율',         // 230-234
+        '🎪 환상의 서커스',     // 235-239
+        '🏛️ 무한 도서관',       // 240-244
+        '🌺 에덴의 끝',         // 245-249
+        // 251-300: 철학적 개념
+        '🔲 플라톤 동굴',       // 250-254
+        '⚖️ 운명의 저울',       // 255-259
+        '🎭 페르소나 극장',     // 260-264
+        '📜 아카식 레코드',     // 265-269
+        '🔔 존재의 종소리',     // 270-274
+        '🌊 레테의 강',         // 275-279
+        '⛰️ 올림푸스 정상',     // 280-284
+        '🌙 셀레네의 꿈',       // 285-289
+        '☀️ 헬리오스의 길',     // 290-294
+        '🌌 아스트랄 평면',     // 295-299
+        // 301-350: 수학적 무한
+        '∞ 알레프 널',          // 300-304
+        '🔢 칸토어 집합',       // 305-309
+        '📐 프랙탈 심연',       // 310-314
+        '🌀 만델브로트',        // 315-319
+        '⭕ 오일러 항등식',     // 320-324
+        '📊 리만 가설',         // 325-329
+        '🔺 파스칼 삼각형',     // 330-334
+        '🎲 확률의 바다',       // 335-339
+        '📈 지수적 폭발',       // 340-344
+        '🔄 괴델 루프',         // 345-349
+        // 351-400: 과학적 극한
+        '⚛️ 플랑크 스케일',     // 350-354
+        '🌡️ 절대 영도',         // 355-359
+        '💥 특이점 코어',       // 360-364
+        '🔬 힉스 필드',         // 365-369
+        '⚡ 진공 에너지',       // 370-374
+        '🌑 사건의 지평선',     // 375-379
+        '💫 호킹 복사',         // 380-384
+        '🔭 관측 한계',         // 385-389
+        '🌐 홀로그램 경계',     // 390-394
+        '🎯 불확정성 원리',     // 395-399
+        // 401-450: 우주론적 끝
+        '🌌 열죽음',            // 400-404
+        '💀 빅 립',             // 405-409
+        '🔄 빅 바운스',         // 410-414
+        '❄️ 빅 프리즈',         // 415-419
+        '🌑 빅 크런치',         // 420-424
+        '⏰ 시간 종말',         // 425-429
+        '🕳️ 정보 역설',        // 430-434
+        '🎭 볼츠만 뇌',         // 435-439
+        '🔮 시뮬레이션 끝',     // 440-444
+        '♾️ 영원 회귀',         // 445-449
+        // 451-500: 최후의 개념들
+        '🌟 최후의 별',         // 450-454
+        '⚫ 최후의 블랙홀',     // 455-459
+        '💨 최후의 입자',       // 460-464
+        '🔊 최후의 진동',       // 465-469
+        '💭 최후의 생각',       // 470-474
+        '❤️ 최후의 감정',       // 475-479
+        '🎵 최후의 화음',       // 480-484
+        '🌸 최후의 아름다움',   // 485-489
+        '✨ 최후의 희망',       // 490-494
+        '🙏 최후의 기도',       // 495-499
+        '👑 절대자의 왕좌',     // 500+
     ];
-    let stageName = stageNames[0];
-    if (p >= 0.96) stageName = stageNames[12];
-    else if (p >= 0.88) stageName = stageNames[11];
-    else if (p >= 0.80) stageName = stageNames[10];
-    else if (p >= 0.72) stageName = stageNames[9];
-    else if (p >= 0.64) stageName = stageNames[8];
-    else if (p >= 0.56) stageName = stageNames[7];
-    else if (p >= 0.48) stageName = stageNames[6];
-    else if (p >= 0.40) stageName = stageNames[5];
-    else if (p >= 0.32) stageName = stageNames[4];
-    else if (p >= 0.24) stageName = stageNames[3];
-    else if (p >= 0.16) stageName = stageNames[2];
-    else if (p >= 0.08) stageName = stageNames[1];
+
+    // 점수에 따른 스테이지 인덱스 계산 (5점당 1스테이지)
+    const stageIndex = Math.min(Math.floor(score / 5), stageNames.length - 1);
+    const stageName = stageNames[stageIndex];
 
     ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
     ctx.font = '16px Arial';
@@ -1597,9 +3379,8 @@ function placeSnowball() {
     // 속도 증가 (최대 제한)
     speed = Math.min(speed + SPEED_INCREMENT, MAX_SPEED);
 
-    // 배경 진행도 업데이트 (점수에 따라)
-    // 50점에서 완전히 우주 끝에 도달 (더 많은 스테이지)
-    targetBackgroundProgress = Math.min(score / 50, 1);
+    // 배경 진행도: 500점에서 모든 배경 완료 (101개 스테이지 * 5점)
+    targetBackgroundProgress = Math.min(score / 500, 1);
 
     // 눈사람이 화면 중간 이상 쌓이면 아래로 밀기
     const baseSnowball = snowballs[0];
