@@ -793,6 +793,19 @@ function animate() {
 }
 
 // ==================== 입력 처리 ====================
+function handleInput(e) {
+    if (e) {
+        e.preventDefault();
+        e.stopPropagation();
+    }
+
+    if (gameRunning) {
+        placeSnowball();
+    } else {
+        initGame();
+    }
+}
+
 document.addEventListener('keydown', (e) => {
     if (e.code === 'Space') {
         e.preventDefault();
@@ -802,18 +815,11 @@ document.addEventListener('keydown', (e) => {
     }
 });
 
-canvas.addEventListener('mousedown', () => {
-    if (gameRunning) {
-        placeSnowball();
-    }
-});
+// 터치 이벤트 (모바일)
+canvas.addEventListener('touchstart', handleInput, { passive: false });
 
-canvas.addEventListener('touchstart', (e) => {
-    e.preventDefault();
-    if (gameRunning) {
-        placeSnowball();
-    }
-}, { passive: false });
+// 마우스 이벤트 (데스크톱)
+canvas.addEventListener('mousedown', handleInput);
 
 // 더블탭 줌 방지
 let lastTouchEnd = 0;
@@ -888,18 +894,5 @@ function backgroundLoop() {
 highScoreElement.textContent = highScore;
 initSnowflakes();
 initStars();
-
-canvas.addEventListener('click', function () {
-    if (!gameRunning) {
-        initGame();
-    }
-});
-
-canvas.addEventListener('touchstart', function (e) {
-    if (!gameRunning) {
-        e.preventDefault();
-        initGame();
-    }
-}, { passive: false });
 
 backgroundLoop();
