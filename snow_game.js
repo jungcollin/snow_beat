@@ -13,6 +13,16 @@ const leaderboard = document.getElementById('leaderboard');
 const leaderboardList = document.getElementById('leaderboard-list');
 const closeLeaderboardBtn = document.getElementById('closeLeaderboard');
 
+// 엔딩 모달 요소
+const endingModal = document.getElementById('endingModal');
+const endingFinalScore = document.getElementById('ending-final-score');
+const endingUsernameInput = document.getElementById('ending-username');
+const endingSaveScoreBtn = document.getElementById('ending-save-score-btn');
+const endingRestartBtn = document.getElementById('endingRestartBtn');
+
+// 엔딩 상수
+const ENDING_SCORE = 500;
+
 // ==================== 게임 상수 ====================
 const SNOWBALL_SIZE = 70; // 더 큰 눈덩이
 const INITIAL_WIDTH = 200; // 넓은 시작 크기
@@ -3246,6 +3256,8 @@ function initGame() {
     highScoreElement.textContent = highScore;
     gameRunning = true;
     gameOverModal.classList.add('hidden');
+    endingModal.classList.add('hidden');
+    stopEndingCelebration();
     gameMessage.textContent = '클릭 또는 스페이스바로 눈을 떨어뜨리세요!';
 
     initSnowflakes();
@@ -3294,6 +3306,110 @@ function gameOver() {
     }
 
     gameOverModal.classList.remove('hidden');
+}
+
+// 엔딩 도달
+function showEnding() {
+    gameRunning = false;
+    endingFinalScore.textContent = score;
+
+    if (score > highScore) {
+        highScore = score;
+        localStorage.setItem('snowman_high_score', highScore.toString());
+        highScoreElement.textContent = highScore;
+    }
+
+    // 엔딩 모달 표시
+    endingModal.classList.remove('hidden');
+
+    // 축하 효과 시작
+    startEndingCelebration();
+}
+
+// 엔딩 축하 효과
+let endingParticles = [];
+let endingAnimationId = null;
+
+function startEndingCelebration() {
+    endingParticles = [];
+    // 초기 파티클 생성
+    for (let i = 0; i < 50; i++) {
+        endingParticles.push(createEndingParticle());
+    }
+    animateEndingParticles();
+}
+
+function createEndingParticle() {
+    return {
+        x: Math.random() * canvas.width,
+        y: canvas.height + 20,
+        vx: (Math.random() - 0.5) * 4,
+        vy: -Math.random() * 8 - 4,
+        size: Math.random() * 6 + 2,
+        color: `hsl(${Math.random() * 60 + 40}, 100%, 60%)`, // 금색 ~ 노란색
+        alpha: 1,
+        rotation: Math.random() * Math.PI * 2,
+        rotationSpeed: (Math.random() - 0.5) * 0.2
+    };
+}
+
+function animateEndingParticles() {
+    // 파티클 업데이트 및 그리기
+    ctx.save();
+    for (let i = endingParticles.length - 1; i >= 0; i--) {
+        const p = endingParticles[i];
+        p.x += p.vx;
+        p.y += p.vy;
+        p.vy += 0.1; // 중력
+        p.alpha -= 0.005;
+        p.rotation += p.rotationSpeed;
+
+        if (p.alpha <= 0) {
+            endingParticles.splice(i, 1);
+            // 새 파티클 추가 (모달이 열려있는 동안)
+            if (!endingModal.classList.contains('hidden')) {
+                endingParticles.push(createEndingParticle());
+            }
+            continue;
+        }
+
+        ctx.save();
+        ctx.translate(p.x, p.y);
+        ctx.rotate(p.rotation);
+        ctx.globalAlpha = p.alpha;
+        ctx.fillStyle = p.color;
+
+        // 별 모양 그리기
+        ctx.beginPath();
+        for (let j = 0; j < 5; j++) {
+            const angle = (j * Math.PI * 2) / 5 - Math.PI / 2;
+            const x = Math.cos(angle) * p.size;
+            const y = Math.sin(angle) * p.size;
+            if (j === 0) ctx.moveTo(x, y);
+            else ctx.lineTo(x, y);
+            const innerAngle = angle + Math.PI / 5;
+            const innerX = Math.cos(innerAngle) * (p.size * 0.4);
+            const innerY = Math.sin(innerAngle) * (p.size * 0.4);
+            ctx.lineTo(innerX, innerY);
+        }
+        ctx.closePath();
+        ctx.fill();
+        ctx.restore();
+    }
+    ctx.restore();
+
+    // 모달이 열려있으면 계속 애니메이션
+    if (!endingModal.classList.contains('hidden')) {
+        endingAnimationId = requestAnimationFrame(animateEndingParticles);
+    }
+}
+
+function stopEndingCelebration() {
+    if (endingAnimationId) {
+        cancelAnimationFrame(endingAnimationId);
+        endingAnimationId = null;
+    }
+    endingParticles = [];
 }
 
 // 무게중심 계산: 새 눈덩이가 아래 눈덩이 위에 안정적으로 놓일 수 있는지 확인
@@ -3366,6 +3482,13 @@ function placeSnowball() {
     snowballs.push(newSnowball);
     score++;
     scoreElement.textContent = score;
+
+    // 엔딩 체크 - 500점 도달 시
+    if (score >= ENDING_SCORE) {
+        gameMessage.textContent = '🎊 절대자의 왕좌에 도달! 🎊';
+        showEnding();
+        return;
+    }
 
     // 균형 상태 메시지
     if (stability >= 0.8) {
@@ -3541,6 +3664,36 @@ function showLeaderboard() {
 closeLeaderboardBtn.addEventListener('click', () => {
     leaderboard.classList.add('hidden');
     initGame();
+});
+
+// ==================== 엔딩 모달 이벤트 ====================
+endingRestartBtn.addEventListener('click', () => {
+    endingModal.classList.add('hidden');
+    stopEndingCelebration();
+    initGame();
+});
+
+endingSaveScoreBtn.addEventListener('click', () => {
+    const username = endingUsernameInput.value.trim();
+    if (!username) {
+        alert('닉네임을 입력해주세요!');
+        return;
+    }
+
+    const scores = JSON.parse(localStorage.getItem('snowman_scores') || '[]');
+    scores.push({
+        username: username + ' 👑', // 엔딩 달성자 표시
+        score: score,
+        created_at: new Date().toISOString(),
+        isEnding: true
+    });
+    scores.sort((a, b) => b.score - a.score);
+    localStorage.setItem('snowman_scores', JSON.stringify(scores.slice(0, 10)));
+
+    endingUsernameInput.value = '';
+    endingModal.classList.add('hidden');
+    stopEndingCelebration();
+    showLeaderboard();
 });
 
 // ==================== 시작 화면 ====================

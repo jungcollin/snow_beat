@@ -45,6 +45,28 @@
             <ul id="leaderboard-list"></ul>
             <button id="closeLeaderboard">닫기</button>
         </div>
+
+        <!-- Ending Modal -->
+        <div id="endingModal" class="modal hidden">
+            <div class="modal-content ending-content">
+                <div class="ending-stars"></div>
+                <h1 class="ending-title">🎊 축하합니다! 🎊</h1>
+                <h2 class="ending-subtitle">절대자의 왕좌에 도달했습니다!</h2>
+                <div class="ending-score">
+                    <p>최종 점수: <span id="ending-final-score">500</span></p>
+                    <p class="ending-message">당신은 우주의 모든 경계를 넘어<br>절대자의 영역에 도달한 전설적인 존재입니다.</p>
+                </div>
+                <div class="ending-credits">
+                    <p>❄️ Snow Beat ❄️</p>
+                    <p class="ending-thanks">플레이해주셔서 감사합니다!</p>
+                </div>
+                <div class="score-form">
+                    <input type="text" id="ending-username" placeholder="전설의 닉네임 입력" maxlength="12">
+                    <button id="ending-save-score-btn">전설로 등록</button>
+                </div>
+                <button id="endingRestartBtn">처음부터 다시 시작</button>
+            </div>
+        </div>
     </div>
     <script src="snow_game.js"></script>
 </body>

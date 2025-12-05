@@ -272,3 +272,175 @@ canvas {
         font-size: 1rem;
     }
 }
+
+/* Ending Modal Styles */
+.ending-content {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    position: relative;
+    overflow: hidden;
+    max-width: 400px;
+}
+
+.ending-content::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at 20% 30%, rgba(255, 215, 0, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(138, 43, 226, 0.15) 0%, transparent 50%);
+    pointer-events: none;
+}
+
+.ending-stars {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image:
+        radial-gradient(2px 2px at 20px 30px, white, transparent),
+        radial-gradient(2px 2px at 40px 70px, rgba(255, 255, 255, 0.8), transparent),
+        radial-gradient(1px 1px at 90px 40px, white, transparent),
+        radial-gradient(2px 2px at 130px 80px, rgba(255, 255, 255, 0.6), transparent),
+        radial-gradient(1px 1px at 160px 20px, white, transparent),
+        radial-gradient(2px 2px at 200px 60px, rgba(255, 255, 255, 0.7), transparent),
+        radial-gradient(1px 1px at 250px 90px, white, transparent),
+        radial-gradient(2px 2px at 280px 30px, rgba(255, 255, 255, 0.9), transparent),
+        radial-gradient(1px 1px at 320px 70px, white, transparent),
+        radial-gradient(2px 2px at 350px 50px, rgba(255, 255, 255, 0.5), transparent);
+    animation: twinkle 3s ease-in-out infinite;
+    pointer-events: none;
+}
+
+@keyframes twinkle {
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 1; }
+}
+
+.ending-title {
+    font-size: 2.2rem;
+    margin-bottom: 10px;
+    text-shadow: 0 0 20px rgba(255, 215, 0, 0.8), 0 0 40px rgba(255, 215, 0, 0.4);
+    animation: glow 2s ease-in-out infinite;
+    position: relative;
+    z-index: 1;
+}
+
+@keyframes glow {
+    0%, 100% { text-shadow: 0 0 20px rgba(255, 215, 0, 0.8), 0 0 40px rgba(255, 215, 0, 0.4); }
+    50% { text-shadow: 0 0 30px rgba(255, 215, 0, 1), 0 0 60px rgba(255, 215, 0, 0.6); }
+}
+
+.ending-subtitle {
+    font-size: 1.3rem;
+    color: #ffd700;
+    margin-bottom: 25px;
+    position: relative;
+    z-index: 1;
+}
+
+.ending-score {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 1;
+}
+
+.ending-score p:first-child {
+    font-size: 1.8rem;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.ending-score #ending-final-score {
+    color: #ffd700;
+    font-size: 2.2rem;
+}
+
+.ending-message {
+    font-size: 1rem !important;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 0 !important;
+}
+
+.ending-credits {
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 1;
+}
+
+.ending-credits p:first-child {
+    font-size: 1.2rem;
+    margin-bottom: 5px;
+}
+
+.ending-thanks {
+    font-size: 0.9rem !important;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.ending-content .score-form {
+    position: relative;
+    z-index: 1;
+}
+
+.ending-content .score-form input {
+    background: rgba(255, 255, 255, 0.9);
+    border: 2px solid #ffd700;
+}
+
+#ending-save-score-btn {
+    background: linear-gradient(135deg, #ffd700 0%, #ffaa00 100%);
+    color: #1a1a2e;
+    font-weight: bold;
+}
+
+#ending-save-score-btn:hover {
+    background: linear-gradient(135deg, #ffea00 0%, #ffc400 100%);
+    transform: scale(1.05);
+}
+
+#endingRestartBtn {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    position: relative;
+    z-index: 1;
+}
+
+#endingRestartBtn:hover {
+    background: linear-gradient(135deg, #7b8ff0 0%, #8b5cb8 100%);
+    transform: scale(1.05);
+}
+
+/* Mobile Responsive for Ending */
+@media screen and (max-width: 768px) {
+    .ending-content {
+        padding: 25px 20px;
+        max-width: 90vw;
+    }
+
+    .ending-title {
+        font-size: 1.6rem;
+    }
+
+    .ending-subtitle {
+        font-size: 1.1rem;
+    }
+
+    .ending-score p:first-child {
+        font-size: 1.4rem;
+    }
+
+    .ending-score #ending-final-score {
+        font-size: 1.8rem;
+    }
+
+    .ending-message {
+        font-size: 0.9rem !important;
+    }
+}
