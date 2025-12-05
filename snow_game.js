@@ -13,6 +13,11 @@ const leaderboard = document.getElementById('leaderboard');
 const leaderboardList = document.getElementById('leaderboard-list');
 const closeLeaderboardBtn = document.getElementById('closeLeaderboard');
 
+// ==================== Supabase 설정 ====================
+const SUPABASE_URL = 'https://hfjwrxudlwsckqemxzty.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhmandyeHVkbHdzY2txZW14enR5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ5MTA0MTQsImV4cCI6MjA4MDQ4NjQxNH0.1KsnS3r_xBjqZrlC71unWEGoNv45u--hgI8zMq8KrV0';
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
 // 엔딩 모달 요소
 const endingModal = document.getElementById('endingModal');
 const endingFinalScore = document.getElementById('ending-final-score');
@@ -55,6 +60,31 @@ let targetScrollOffset = 0; // 목표 스크롤 (부드러운 전환용)
 let speed = INITIAL_SPEED;
 let prevCanvasWidth = 0;
 let prevCanvasHeight = 0;
+
+// ==================== 스테이지 이름 ====================
+const STAGE_NAMES = [
+    '🌙 겨울 밤', '⛅ 높은 하늘', '🌌 성층권', '🌠 우주 진입', '🌑 깊은 우주',
+    '🌀 은하계', '✨ 은하 외곽', '🚀 태양계 밖', '🕳️ 블랙홀 지대', '💫 퀘이사 영역',
+    '🕸️ 우주 거대구조', '🔥 빅뱅 잔광', '🌈 다중우주 경계', '🔮 옴니버스', '⚡ 초월 공간',
+    '♾️ 무한의 끝', '💠 존재의 근원', '🌑 절대 무', '✴️ 창조의 빛', '🎭 의식의 바다',
+    '⏳ 시간의 무덤', '🔷 차원의 틈', '🌀 혼돈의 소용돌이', '💎 결정화된 시공', '🎇 에테르 평원',
+    '🌟 항성의 요람', '🔥 초신성 잔해', '❄️ 우주의 동결점', '⚫ 암흑 에너지 해', '🌊 중력파 폭풍',
+    '💫 반물질 구역', '🔆 감마선 폭발', '🌌 초은하단', '🕳️ 화이트홀 출구', '⭐ 펄서 벨트',
+    '🌑 마그네타 영역', '💠 양자 거품', '🔮 끈 이론 공간', '♾️ 무한 차원', '✨ 순수 에너지',
+    '🌈 스펙트럼 너머', '🎆 초월의 문', '🌟 영원의 빛', '🔱 신들의 영역', '👁️ 전지의 눈',
+    '🌸 열반의 정원', '⚜️ 황금 비율', '🎪 환상의 서커스', '🏛️ 무한 도서관', '🌺 에덴의 끝',
+    '🔲 플라톤 동굴', '⚖️ 운명의 저울', '🎭 페르소나 극장', '📜 아카식 레코드', '🔔 존재의 종소리',
+    '🌊 레테의 강', '⛰️ 올림푸스 정상', '🌙 셀레네의 꿈', '☀️ 헬리오스의 길', '🌌 아스트랄 평면',
+    '∞ 알레프 널', '🔢 칸토어 집합', '📐 프랙탈 심연', '🌀 만델브로트', '⭕ 오일러 항등식',
+    '📊 리만 가설', '🔺 파스칼 삼각형', '🎲 확률의 바다', '📈 지수적 폭발', '🔄 괴델 루프',
+    '⚛️ 플랑크 스케일', '🌡️ 절대 영도', '💥 특이점 코어', '🔬 힉스 필드', '⚡ 진공 에너지',
+    '🌑 사건의 지평선', '💫 호킹 복사', '🔭 관측 한계', '🌐 홀로그램 경계', '🎯 불확정성 원리',
+    '🌌 열죽음', '💀 빅 립', '🔄 빅 바운스', '❄️ 빅 프리즈', '🌑 빅 크런치',
+    '⏰ 시간 종말', '🕳️ 정보 역설', '🎭 볼츠만 뇌', '🔮 시뮬레이션 끝', '♾️ 영원 회귀',
+    '🌟 최후의 별', '⚫ 최후의 블랙홀', '💨 최후의 입자', '🔊 최후의 진동', '💭 최후의 생각',
+    '❤️ 최후의 감정', '🎵 최후의 화음', '🌸 최후의 아름다움', '✨ 최후의 희망', '🙏 최후의 기도',
+    '👑 절대자의 왕좌'
+];
 
 // ==================== 캔버스 리사이즈 ====================
 function resizeCanvas() {
@@ -2994,130 +3024,16 @@ function drawBackground() {
     }
 
     // 땅과 산 (아래로 스크롤) - 더 빨리 사라지도록
-    const groundYOffset = p * 1200;
+    // 5점(스테이지 1개)마다 120픽셀씩 내려감 (500점에서 12000픽셀)
+    const groundYOffset = p * 12000;
     drawGround(1 - smoothStep(0.06, 0.16, p), groundYOffset);
 
     // 양옆 오브젝트 (땅과 함께 내려감)
     drawSideObjects(p, groundYOffset);
 
-    // 현재 위치 표시 - 점수 기반 스테이지 (100개)
-    const stageNames = [
-        // 1-50: 지구 → 우주
-        '🌙 겨울 밤',           // 0-4
-        '⛅ 높은 하늘',         // 5-9
-        '🌌 성층권',            // 10-14
-        '🌠 우주 진입',         // 15-19
-        '🌑 깊은 우주',         // 20-24
-        '🌀 은하계',            // 25-29
-        '✨ 은하 외곽',         // 30-34
-        '🚀 태양계 밖',         // 35-39
-        '🕳️ 블랙홀 지대',      // 40-44
-        '💫 퀘이사 영역',       // 45-49
-        // 51-100: 우주 끝 → 다중우주
-        '🕸️ 우주 거대구조',    // 50-54
-        '🔥 빅뱅 잔광',         // 55-59
-        '🌈 다중우주 경계',     // 60-64
-        '🔮 옴니버스',          // 65-69
-        '⚡ 초월 공간',         // 70-74
-        '♾️ 무한의 끝',         // 75-79
-        '💠 존재의 근원',       // 80-84
-        '🌑 절대 무',           // 85-89
-        '✴️ 창조의 빛',         // 90-94
-        '🎭 의식의 바다',       // 95-99
-        // 101-150: 추상적 개념
-        '⏳ 시간의 무덤',       // 100-104
-        '🔷 차원의 틈',         // 105-109
-        '🌀 혼돈의 소용돌이',   // 110-114
-        '💎 결정화된 시공',     // 115-119
-        '🎇 에테르 평원',       // 120-124
-        '🌟 항성의 요람',       // 125-129
-        '🔥 초신성 잔해',       // 130-134
-        '❄️ 우주의 동결점',     // 135-139
-        '⚫ 암흑 에너지 해',    // 140-144
-        '🌊 중력파 폭풍',       // 145-149
-        // 151-200: 물리학적 극한
-        '💫 반물질 구역',       // 150-154
-        '🔆 감마선 폭발',       // 155-159
-        '🌌 초은하단',          // 160-164
-        '🕳️ 화이트홀 출구',    // 165-169
-        '⭐ 펄서 벨트',         // 170-174
-        '🌑 마그네타 영역',     // 175-179
-        '💠 양자 거품',         // 180-184
-        '🔮 끈 이론 공간',      // 185-189
-        '♾️ 무한 차원',         // 190-194
-        '✨ 순수 에너지',       // 195-199
-        // 201-250: 스펙트럼 너머
-        '🌈 스펙트럼 너머',     // 200-204
-        '🎆 초월의 문',         // 205-209
-        '🌟 영원의 빛',         // 210-214
-        '🔱 신들의 영역',       // 215-219
-        '👁️ 전지의 눈',        // 220-224
-        '🌸 열반의 정원',       // 225-229
-        '⚜️ 황금 비율',         // 230-234
-        '🎪 환상의 서커스',     // 235-239
-        '🏛️ 무한 도서관',       // 240-244
-        '🌺 에덴의 끝',         // 245-249
-        // 251-300: 철학적 개념
-        '🔲 플라톤 동굴',       // 250-254
-        '⚖️ 운명의 저울',       // 255-259
-        '🎭 페르소나 극장',     // 260-264
-        '📜 아카식 레코드',     // 265-269
-        '🔔 존재의 종소리',     // 270-274
-        '🌊 레테의 강',         // 275-279
-        '⛰️ 올림푸스 정상',     // 280-284
-        '🌙 셀레네의 꿈',       // 285-289
-        '☀️ 헬리오스의 길',     // 290-294
-        '🌌 아스트랄 평면',     // 295-299
-        // 301-350: 수학적 무한
-        '∞ 알레프 널',          // 300-304
-        '🔢 칸토어 집합',       // 305-309
-        '📐 프랙탈 심연',       // 310-314
-        '🌀 만델브로트',        // 315-319
-        '⭕ 오일러 항등식',     // 320-324
-        '📊 리만 가설',         // 325-329
-        '🔺 파스칼 삼각형',     // 330-334
-        '🎲 확률의 바다',       // 335-339
-        '📈 지수적 폭발',       // 340-344
-        '🔄 괴델 루프',         // 345-349
-        // 351-400: 과학적 극한
-        '⚛️ 플랑크 스케일',     // 350-354
-        '🌡️ 절대 영도',         // 355-359
-        '💥 특이점 코어',       // 360-364
-        '🔬 힉스 필드',         // 365-369
-        '⚡ 진공 에너지',       // 370-374
-        '🌑 사건의 지평선',     // 375-379
-        '💫 호킹 복사',         // 380-384
-        '🔭 관측 한계',         // 385-389
-        '🌐 홀로그램 경계',     // 390-394
-        '🎯 불확정성 원리',     // 395-399
-        // 401-450: 우주론적 끝
-        '🌌 열죽음',            // 400-404
-        '💀 빅 립',             // 405-409
-        '🔄 빅 바운스',         // 410-414
-        '❄️ 빅 프리즈',         // 415-419
-        '🌑 빅 크런치',         // 420-424
-        '⏰ 시간 종말',         // 425-429
-        '🕳️ 정보 역설',        // 430-434
-        '🎭 볼츠만 뇌',         // 435-439
-        '🔮 시뮬레이션 끝',     // 440-444
-        '♾️ 영원 회귀',         // 445-449
-        // 451-500: 최후의 개념들
-        '🌟 최후의 별',         // 450-454
-        '⚫ 최후의 블랙홀',     // 455-459
-        '💨 최후의 입자',       // 460-464
-        '🔊 최후의 진동',       // 465-469
-        '💭 최후의 생각',       // 470-474
-        '❤️ 최후의 감정',       // 475-479
-        '🎵 최후의 화음',       // 480-484
-        '🌸 최후의 아름다움',   // 485-489
-        '✨ 최후의 희망',       // 490-494
-        '🙏 최후의 기도',       // 495-499
-        '👑 절대자의 왕좌',     // 500+
-    ];
-
-    // 점수에 따른 스테이지 인덱스 계산 (5점당 1스테이지)
-    const stageIndex = Math.min(Math.floor(score / 5), stageNames.length - 1);
-    const stageName = stageNames[stageIndex];
+    // 현재 스테이지 이름 표시 (화면 하단)
+    const stageIndex = Math.min(Math.floor(score / 5), STAGE_NAMES.length - 1);
+    const stageName = STAGE_NAMES[stageIndex];
 
     ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
     ctx.font = '16px Arial';
@@ -3257,8 +3173,12 @@ function initGame() {
     gameRunning = true;
     gameOverModal.classList.add('hidden');
     endingModal.classList.add('hidden');
+    leaderboard.classList.add('hidden');
     stopEndingCelebration();
     gameMessage.textContent = '클릭 또는 스페이스바로 눈을 떨어뜨리세요!';
+
+    // 랭킹 버튼 숨기기
+    if (rankingBtn) rankingBtn.style.display = 'none';
 
     initSnowflakes();
     initStars();
@@ -3301,9 +3221,11 @@ function gameOver() {
 
     if (score > highScore) {
         highScore = score;
-        localStorage.setItem('snowman_high_score', highScore.toString());
         highScoreElement.textContent = highScore;
     }
+
+    // 랭킹 버튼 다시 표시
+    if (rankingBtn) rankingBtn.style.display = 'inline-block';
 
     gameOverModal.classList.remove('hidden');
 }
@@ -3315,9 +3237,11 @@ function showEnding() {
 
     if (score > highScore) {
         highScore = score;
-        localStorage.setItem('snowman_high_score', highScore.toString());
         highScoreElement.textContent = highScore;
     }
+
+    // 랭킹 버튼 다시 표시
+    if (rankingBtn) rankingBtn.style.display = 'inline-block';
 
     // 엔딩 모달 표시
     endingModal.classList.remove('hidden');
@@ -3490,14 +3414,9 @@ function placeSnowball() {
         return;
     }
 
-    // 균형 상태 메시지
-    if (stability >= 0.8) {
-        gameMessage.textContent = '완벽한 균형!';
-    } else if (stability >= 0.5) {
-        gameMessage.textContent = '균형 양호';
-    } else {
-        gameMessage.textContent = '균형 위험!';
-    }
+    // 현재 스테이지 이름 표시
+    const stageIndex = Math.min(Math.floor(score / 5), STAGE_NAMES.length - 1);
+    gameMessage.textContent = STAGE_NAMES[stageIndex];
 
     // 속도 증가 (최대 제한)
     speed = Math.min(speed + SPEED_INCREMENT, MAX_SPEED);
@@ -3507,7 +3426,7 @@ function placeSnowball() {
 
     // 눈사람이 화면 중간 이상 쌓이면 아래로 밀기
     const baseSnowball = snowballs[0];
-    const groundYOffset = backgroundProgress * 1200;
+    const groundYOffset = backgroundProgress * 12000;
     const baseDrawY = canvas.height - GROUND_HEIGHT - SNOWBALL_SIZE + groundYOffset;
 
     // 방금 쌓인 눈덩이(마지막 눈덩이)의 화면상 Y 위치
@@ -3552,7 +3471,7 @@ function draw() {
     drawBackground();
 
     // 배경과 동일한 오프셋 (땅과 함께 내려감)
-    const groundYOffset = backgroundProgress * 1200;
+    const groundYOffset = backgroundProgress * 12000;
 
     // 베이스 눈덩이 기준 위치 (땅 위)
     const baseSnowball = snowballs[0];
@@ -3634,37 +3553,76 @@ saveScoreBtn.addEventListener('click', async () => {
         return;
     }
 
-    const scores = JSON.parse(localStorage.getItem('snowman_scores') || '[]');
-    scores.push({
-        username: username,
-        score: score,
-        created_at: new Date().toISOString()
-    });
-    scores.sort((a, b) => b.score - a.score);
-    localStorage.setItem('snowman_scores', JSON.stringify(scores.slice(0, 10)));
+    saveScoreBtn.disabled = true;
+    saveScoreBtn.textContent = '저장 중...';
 
-    usernameInput.value = '';
-    showLeaderboard();
+    try {
+        const { error } = await supabase
+            .from('rankings')
+            .insert({
+                username: username,
+                score: score,
+                is_ending: false
+            });
+
+        if (error) throw error;
+
+        usernameInput.value = '';
+        showLeaderboard();
+    } catch (err) {
+        console.error('점수 저장 실패:', err);
+        alert('점수 저장에 실패했습니다. 다시 시도해주세요.');
+    } finally {
+        saveScoreBtn.disabled = false;
+        saveScoreBtn.textContent = '점수 등록';
+    }
 });
 
-function showLeaderboard() {
+async function showLeaderboard() {
     gameOverModal.classList.add('hidden');
+    endingModal.classList.add('hidden');
     leaderboard.classList.remove('hidden');
+    leaderboardList.innerHTML = '<li>로딩 중...</li>';
 
-    const scores = JSON.parse(localStorage.getItem('snowman_scores') || '[]');
-    leaderboardList.innerHTML = '';
+    try {
+        const { data, error } = await supabase
+            .from('rankings')
+            .select('username, score, is_ending')
+            .order('score', { ascending: false })
+            .limit(10);
 
-    scores.slice(0, 10).forEach((entry, index) => {
-        const li = document.createElement('li');
-        li.innerHTML = `<span class="rank">${index + 1}위</span> <span>${entry.username}</span> <span>${entry.score}점</span>`;
-        leaderboardList.appendChild(li);
-    });
+        if (error) throw error;
+
+        leaderboardList.innerHTML = '';
+        if (data.length === 0) {
+            leaderboardList.innerHTML = '<li>아직 기록이 없습니다</li>';
+            return;
+        }
+
+        data.forEach((entry, index) => {
+            const li = document.createElement('li');
+            const crown = entry.is_ending ? ' 👑' : '';
+            li.innerHTML = `<span class="rank">${index + 1}위</span> <span>${entry.username}${crown}</span> <span>${entry.score}점</span>`;
+            leaderboardList.appendChild(li);
+        });
+    } catch (err) {
+        console.error('랭킹 로드 실패:', err);
+        leaderboardList.innerHTML = '<li>랭킹을 불러올 수 없습니다</li>';
+    }
 }
 
 closeLeaderboardBtn.addEventListener('click', () => {
     leaderboard.classList.add('hidden');
     initGame();
 });
+
+// ==================== 랭킹 조회 버튼 ====================
+const rankingBtn = document.getElementById('ranking-btn');
+if (rankingBtn) {
+    rankingBtn.addEventListener('click', () => {
+        showLeaderboard();
+    });
+}
 
 // ==================== 엔딩 모달 이벤트 ====================
 endingRestartBtn.addEventListener('click', () => {
@@ -3673,27 +3631,38 @@ endingRestartBtn.addEventListener('click', () => {
     initGame();
 });
 
-endingSaveScoreBtn.addEventListener('click', () => {
+endingSaveScoreBtn.addEventListener('click', async () => {
     const username = endingUsernameInput.value.trim();
     if (!username) {
         alert('닉네임을 입력해주세요!');
         return;
     }
 
-    const scores = JSON.parse(localStorage.getItem('snowman_scores') || '[]');
-    scores.push({
-        username: username + ' 👑', // 엔딩 달성자 표시
-        score: score,
-        created_at: new Date().toISOString(),
-        isEnding: true
-    });
-    scores.sort((a, b) => b.score - a.score);
-    localStorage.setItem('snowman_scores', JSON.stringify(scores.slice(0, 10)));
+    endingSaveScoreBtn.disabled = true;
+    endingSaveScoreBtn.textContent = '저장 중...';
 
-    endingUsernameInput.value = '';
-    endingModal.classList.add('hidden');
-    stopEndingCelebration();
-    showLeaderboard();
+    try {
+        const { error } = await supabase
+            .from('rankings')
+            .insert({
+                username: username,
+                score: score,
+                is_ending: true
+            });
+
+        if (error) throw error;
+
+        endingUsernameInput.value = '';
+        endingModal.classList.add('hidden');
+        stopEndingCelebration();
+        showLeaderboard();
+    } catch (err) {
+        console.error('점수 저장 실패:', err);
+        alert('점수 저장에 실패했습니다. 다시 시도해주세요.');
+    } finally {
+        endingSaveScoreBtn.disabled = false;
+        endingSaveScoreBtn.textContent = '전설로 등록';
+    }
 });
 
 // ==================== 시작 화면 ====================
@@ -3713,8 +3682,30 @@ function backgroundLoop() {
 }
 
 // 초기 설정
-highScoreElement.textContent = highScore;
 initSnowflakes();
 initStars();
 
+// Supabase에서 최고 점수 로드
+async function loadHighScore() {
+    try {
+        const { data, error } = await supabase
+            .from('rankings')
+            .select('score')
+            .order('score', { ascending: false })
+            .limit(1);
+
+        if (error) throw error;
+
+        if (data && data.length > 0) {
+            highScore = data[0].score;
+            highScoreElement.textContent = highScore;
+        }
+    } catch (err) {
+        console.error('최고 점수 로드 실패:', err);
+        // localStorage fallback
+        highScoreElement.textContent = highScore;
+    }
+}
+
+loadHighScore();
 backgroundLoop();
