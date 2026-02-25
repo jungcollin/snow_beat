@@ -1,0 +1,109 @@
+body {
+    margin: 0;
+    overflow: hidden;
+    background-color: #000;
+    font-family: 'Courier New', Courier, monospace;
+    color: #fff;
+}
+
+#game-container {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+}
+
+canvas {
+    display: block;
+}
+
+#ui-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+#score-board {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font-size: 20px;
+    text-shadow: 0 0 5px #0ff;
+}
+
+#hp-bar {
+    width: 200px;
+    height: 20px;
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid #fff;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+#hp-fill {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, #ff4d4d, #ff0000);
+    transition: width 0.2s ease-out;
+}
+
+.modal {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0, 0, 0, 0.85);
+    padding: 40px;
+    border: 2px solid #0ff;
+    border-radius: 10px;
+    text-align: center;
+    pointer-events: auto;
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+}
+
+.modal.hidden {
+    display: none;
+}
+
+h1 {
+    font-size: 3rem;
+    margin-bottom: 20px;
+    color: #0ff;
+    text-shadow: 0 0 10px #0ff;
+}
+
+button {
+    background: linear-gradient(180deg, #0ff, #008888);
+    border: none;
+    padding: 15px 30px;
+    color: #000;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-top: 20px;
+    transition: transform 0.1s, box-shadow 0.1s;
+}
+
+button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 15px #0ff;
+}
+
+.home-btn {
+    display: block;
+    margin-top: 20px;
+    color: #aaa;
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+
+.home-btn:hover {
+    color: #fff;
+    text-decoration: underline;
+}

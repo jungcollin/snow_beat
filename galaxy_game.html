@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Galaxy Defender</title>
+    <link rel="stylesheet" href="galaxy_style.css">
+</head>
+<body>
+    <div id="game-container">
+        <canvas id="gameCanvas"></canvas>
+        <div id="ui-overlay">
+            <div id="score-board">
+                <div class="score-item">SCORE: <span id="score">0</span></div>
+                <div class="score-item">LEVEL: <span id="level">1</span></div>
+                <div class="score-item">HP: <div id="hp-bar"><div id="hp-fill"></div></div></div>
+            </div>
+            <div id="start-screen" class="modal">
+                <h1>GALAXY DEFENDER</h1>
+                <p>Arrow Keys/WASD to Move</p>
+                <p>Space/Click to Shoot</p>
+                <button id="start-btn">START MISSION</button>
+            </div>
+            <div id="game-over-modal" class="modal hidden">
+                <h1>MISSION FAILED</h1>
+                <p>Final Score: <span id="final-score">0</span></p>
+                <button id="restart-btn">RETRY</button>
+                <a href="/" class="home-btn">RETURN TO BASE</a>
+            </div>
+        </div>
+    </div>
+    <script src="galaxy_game.js"></script>
+</body>
+</html>
